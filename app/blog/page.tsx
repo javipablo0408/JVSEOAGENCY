@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase-server'
+import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Calendar, Clock, ArrowRight } from 'lucide-react'
@@ -33,7 +33,6 @@ interface BlogPost {
 
 async function getBlogPosts() {
   try {
-    const supabase = await createClient()
     const { data, error } = await supabase
       .from('blog_posts')
       .select('id, title, slug, excerpt, featured_image_url, author_name, published_at, created_at, views, featured')
@@ -54,6 +53,9 @@ async function getBlogPosts() {
     }
 
     console.log('Blog posts fetched:', data?.length || 0)
+    if (data && data.length > 0) {
+      console.log('First post:', data[0].title)
+    }
     return (data || []) as BlogPost[]
   } catch (error) {
     console.error('Error fetching blog posts:', error)
@@ -63,8 +65,10 @@ async function getBlogPosts() {
 
 export default async function BlogPage() {
   const posts = await getBlogPosts()
+  console.log('[BlogPage] Total posts received:', posts.length)
   const featuredPosts = posts.filter(p => p.featured)
   const regularPosts = posts.filter(p => !p.featured)
+  console.log('[BlogPage] Featured:', featuredPosts.length, 'Regular:', regularPosts.length)
 
   const formatDate = (dateString: string | null) => {
     if (!dateString) return ''
