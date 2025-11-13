@@ -6,7 +6,10 @@ import About from '@/components/About'
 import Contact from '@/components/Contact'
 import LocalSEO from '@/components/LocalSEO'
 import Footer from '@/components/Footer'
-import ScrollToHash from '@/components/ScrollToHash'
+
+const ScrollToHash = dynamic(() => import('@/components/ScrollToHash'), {
+  ssr: false
+})
 
 // Lazy load componentes pesados que no están en el viewport inicial
 const Technologies = dynamic(() => import('@/components/Technologies'), {
