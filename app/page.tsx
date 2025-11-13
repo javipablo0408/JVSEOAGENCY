@@ -6,7 +6,6 @@ import About from '@/components/About'
 import Contact from '@/components/Contact'
 import LocalSEO from '@/components/LocalSEO'
 import Footer from '@/components/Footer'
-import Blog from '@/components/Blog'
 
 // Lazy load componentes pesados que no están en el viewport inicial
 const Technologies = dynamic(() => import('@/components/Technologies'), {
@@ -34,6 +33,19 @@ const Projects = dynamic(() => import('@/components/Projects'), {
     </section>
   ),
   ssr: true,
+})
+
+const Blog = dynamic(() => import('@/components/Blog'), {
+  loading: () => (
+    <section id="blog" className="py-20 px-4 bg-white">
+      <div className="container mx-auto max-w-6xl">
+        <div className="text-center">
+          <div className="animate-pulse h-12 bg-gray-200 rounded w-64 mx-auto mb-4"></div>
+        </div>
+      </div>
+    </section>
+  ),
+  ssr: false, // Client-side only para evitar problemas con SSR
 })
 
 export default function Home() {

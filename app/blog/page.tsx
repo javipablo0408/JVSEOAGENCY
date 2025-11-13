@@ -44,18 +44,11 @@ async function getBlogPosts() {
     if (error) {
       // Si la tabla no existe aún, retornar array vacío
       if (error.code === 'PGRST205' || error.message?.includes('Could not find the table')) {
-        console.log('Blog table not found yet. Run blog-setup.sql in Supabase.')
         return []
       }
-      console.error('Error fetching blog posts:', error)
-      console.error('Error details:', JSON.stringify(error, null, 2))
       return []
     }
 
-    console.log('Blog posts fetched:', data?.length || 0)
-    if (data && data.length > 0) {
-      console.log('First post:', data[0].title)
-    }
     return (data || []) as BlogPost[]
   } catch (error) {
     console.error('Error fetching blog posts:', error)
@@ -65,10 +58,8 @@ async function getBlogPosts() {
 
 export default async function BlogPage() {
   const posts = await getBlogPosts()
-  console.log('[BlogPage] Total posts received:', posts.length)
   const featuredPosts = posts.filter(p => p.featured)
   const regularPosts = posts.filter(p => !p.featured)
-  console.log('[BlogPage] Featured:', featuredPosts.length, 'Regular:', regularPosts.length)
 
   const formatDate = (dateString: string | null) => {
     if (!dateString) return ''

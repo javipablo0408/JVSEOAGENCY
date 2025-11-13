@@ -37,16 +37,13 @@ export default function Blog() {
         .limit(3)
 
       if (error) {
-        console.error('Error loading blog posts:', error)
         setPosts([])
       } else if (data) {
-        console.log('Blog posts loaded:', data.length)
         setPosts(data as BlogPost[])
       } else {
         setPosts([])
       }
     } catch (error) {
-      console.error('Error loading blog posts:', error)
       setPosts([])
     } finally {
       setLoading(false)
