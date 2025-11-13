@@ -5,6 +5,7 @@ import { Calendar, Clock, ArrowRight } from 'lucide-react'
 import type { Metadata } from 'next'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import Contact from '@/components/Contact'
 
 export const metadata: Metadata = {
   title: 'Blog - Desarrollo Web Madrid | JVSEOAGENCY',
@@ -185,6 +186,7 @@ export default async function BlogPage() {
         </div>
       </section>
       </main>
+      <Contact />
       <Footer />
     </>
   )

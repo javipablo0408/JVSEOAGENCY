@@ -6,6 +6,7 @@ import { Calendar, Clock, ArrowLeft, Share2 } from 'lucide-react'
 import type { Metadata } from 'next'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import Contact from '@/components/Contact'
 
 interface BlogPost {
   id: string
@@ -247,6 +248,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
         </footer>
       </article>
     </main>
+    <Contact />
     <Footer />
     </>
   )

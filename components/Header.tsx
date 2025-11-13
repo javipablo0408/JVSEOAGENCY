@@ -1,10 +1,14 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { usePathname } from 'next/navigation'
 import { Menu, X } from 'lucide-react'
+import Link from 'next/link'
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const pathname = usePathname()
+  const isHomePage = pathname === '/'
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
     // Si es un enlace externo o a otra página, no prevenir el comportamiento por defecto
@@ -17,6 +21,12 @@ export default function Header() {
     
     // Cerrar menú móvil si está abierto
     setIsMenuOpen(false)
+    
+    // Si no estamos en la página principal, redirigir primero
+    if (!isHomePage) {
+      window.location.href = `/${targetId}`
+      return
+    }
     
     // Obtener el elemento destino
     const targetElement = document.querySelector(targetId)
@@ -39,9 +49,12 @@ export default function Header() {
       ? "bg-primary-600 text-white px-6 py-2 rounded-lg hover:bg-primary-700 active:bg-primary-800 active:scale-95 transition-all duration-200 ease-out font-medium"
       : "text-gray-700 hover:text-primary-600 active:text-primary-700 relative transition-all duration-200 ease-out after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-primary-600 after:transition-all after:duration-300 hover:after:w-full active:scale-95"
     
+    // Si el href es un hash y no estamos en la página principal, redirigir a la página principal con el hash
+    const finalHref = !isHomePage && href.startsWith('#') ? `/${href}` : href
+    
     return (
       <a
-        href={href}
+        href={finalHref}
         onClick={(e) => handleNavClick(e, href)}
         className={baseClasses}
       >
@@ -55,9 +68,12 @@ export default function Header() {
       ? "block bg-primary-600 text-white px-6 py-2 rounded-lg hover:bg-primary-700 active:bg-primary-800 active:scale-95 transition-all duration-200 ease-out text-center font-medium"
       : "block text-gray-700 hover:text-primary-600 active:text-primary-700 active:scale-95 transition-all duration-200 ease-out py-2"
     
+    // Si el href es un hash y no estamos en la página principal, redirigir a la página principal con el hash
+    const finalHref = !isHomePage && href.startsWith('#') ? `/${href}` : href
+    
     return (
       <a
-        href={href}
+        href={finalHref}
         onClick={(e) => handleNavClick(e, href)}
         className={baseClasses}
       >
@@ -70,13 +86,18 @@ export default function Header() {
     <header className="fixed top-0 w-full bg-white/90 backdrop-blur-md shadow-sm z-50 transition-shadow duration-300">
       <nav className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
-          <a 
-            href="#inicio" 
-            onClick={(e) => handleNavClick(e, '#inicio')}
+          <Link 
+            href="/#inicio" 
+            onClick={(e) => {
+              if (isHomePage) {
+                e.preventDefault()
+                handleNavClick(e, '#inicio')
+              }
+            }}
             className="text-xl sm:text-2xl font-bold text-primary-600 hover:text-primary-700 active:scale-95 transition-all duration-200 ease-out cursor-pointer"
           >
             JVSEO<span className="text-primary-800">AGENCY</span>
-          </a>
+          </Link>
           
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
