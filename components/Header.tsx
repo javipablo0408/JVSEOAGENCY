@@ -1,13 +1,14 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { usePathname } from 'next/navigation'
+import { useState } from 'react'
+import { usePathname, useRouter } from 'next/navigation'
 import { Menu, X } from 'lucide-react'
 import Link from 'next/link'
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const pathname = usePathname()
+  const router = useRouter()
   const isHomePage = pathname === '/'
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
@@ -22,9 +23,21 @@ export default function Header() {
     // Cerrar menú móvil si está abierto
     setIsMenuOpen(false)
     
-    // Si no estamos en la página principal, redirigir primero
+    // Si no estamos en la página principal, redirigir primero a la página principal con el hash
     if (!isHomePage) {
-      window.location.href = `/${targetId}`
+      router.push(`/${targetId}`)
+      // Esperar a que la página cargue y luego hacer scroll
+      setTimeout(() => {
+        const targetElement = document.querySelector(targetId)
+        if (targetElement) {
+          const headerHeight = 80
+          const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight
+          window.scrollTo({
+            top: targetPosition,
+            behavior: 'smooth'
+          })
+        }
+      }, 100)
       return
     }
     
