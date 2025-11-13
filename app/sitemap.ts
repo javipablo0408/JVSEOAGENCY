@@ -29,7 +29,8 @@ async function getBlogPosts() {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://jvseoagency.com'
+  // Usar el dominio con www para consistencia
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.jvseoagency.com'
   const currentDate = new Date()
 
   // Obtener entradas del blog
