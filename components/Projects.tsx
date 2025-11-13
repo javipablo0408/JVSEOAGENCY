@@ -58,11 +58,11 @@ export default function Projects() {
   return (
     <section id="proyectos" className="py-20 px-4 bg-gradient-to-br from-gray-50 to-white">
       <div className="container mx-auto max-w-6xl">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+        <div className="text-center mb-12 sm:mb-16">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4 px-4">
             Nuestros Proyectos
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl mx-auto px-4">
             Descubre algunos de nuestros trabajos más destacados
           </p>
         </div>
@@ -70,11 +70,11 @@ export default function Projects() {
         {/* Featured Projects */}
         {featuredProjects.length > 0 && (
           <div className="mb-12">
-            <div className="flex items-center gap-2 mb-8">
-              <Star className="text-yellow-500" size={24} />
-              <h3 className="text-2xl font-bold text-gray-900">Proyectos Destacados</h3>
+            <div className="flex items-center gap-2 mb-6 sm:mb-8 px-4">
+              <Star className="text-yellow-500" size={20} />
+              <h3 className="text-xl sm:text-2xl font-bold text-gray-900">Proyectos Destacados</h3>
             </div>
-            <div className="grid md:grid-cols-2 gap-8">
+            <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 px-4 sm:px-0">
               {featuredProjects.map((project) => (
                 <ProjectCard key={project.id} project={project} featured />
               ))}
@@ -86,9 +86,9 @@ export default function Projects() {
         {otherProjects.length > 0 && (
           <div>
             {featuredProjects.length > 0 && (
-              <h3 className="text-2xl font-bold text-gray-900 mb-8">Más Proyectos</h3>
+              <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-6 sm:mb-8 px-4 sm:px-0">Más Proyectos</h3>
             )}
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4 sm:px-0">
               {otherProjects.map((project) => (
                 <ProjectCard key={project.id} project={project} />
               ))}
@@ -118,28 +118,28 @@ function ProjectCard({ project, featured = false }: { project: Project; featured
           )}
         </div>
       )}
-      <div className="p-6">
-        <h3 className="text-2xl font-bold text-gray-900 mb-3">{project.title}</h3>
-        <p className="text-gray-600 mb-4 leading-relaxed">{project.description}</p>
-        <div className="flex flex-wrap gap-2 mb-4">
+      <div className="p-4 sm:p-6">
+        <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2 sm:mb-3">{project.title}</h3>
+        <p className="text-sm sm:text-base text-gray-600 mb-3 sm:mb-4 leading-relaxed">{project.description}</p>
+        <div className="flex flex-wrap gap-2 mb-3 sm:mb-4">
           {project.technologies.map((tech, idx) => (
             <span
               key={idx}
-              className="bg-primary-100 text-primary-700 text-xs px-3 py-1 rounded-full font-medium"
+              className="bg-primary-100 text-primary-700 text-xs px-2 sm:px-3 py-1 rounded-full font-medium"
             >
               {tech}
             </span>
           ))}
         </div>
-        <div className="flex gap-3">
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
           {project.project_url && (
             <a
               href={project.project_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition"
+              className="flex items-center justify-center gap-2 bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition text-sm sm:text-base"
             >
-              <ExternalLink size={18} />
+              <ExternalLink size={16} />
               Ver Proyecto
             </a>
           )}
@@ -148,9 +148,9 @@ function ProjectCard({ project, featured = false }: { project: Project; featured
               href={project.github_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 border-2 border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:border-gray-400 transition"
+              className="flex items-center justify-center gap-2 border-2 border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:border-gray-400 transition text-sm sm:text-base"
             >
-              <Github size={18} />
+              <Github size={16} />
               Código
             </a>
           )}

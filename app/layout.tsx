@@ -8,6 +8,7 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
   title: 'JVSEOAGENCY - Expertos en Desarrollo Web, Apps y Automatizaciones IA',
   description: 'Agencia especializada en desarrollo de aplicaciones, webs y automatizaciones con Inteligencia Artificial',
+  viewport: 'width=device-width, initial-scale=1',
 }
 
 export default function RootLayout({

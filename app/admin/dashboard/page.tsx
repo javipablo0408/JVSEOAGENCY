@@ -228,25 +228,25 @@ export default function DashboardPage() {
       {/* Header */}
       <header className="bg-white shadow-sm border-b">
         <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">
+              <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
                 Panel de Administración
               </h1>
-              <p className="text-gray-600">JVSEOAGENCY</p>
+              <p className="text-sm sm:text-base text-gray-600">JVSEOAGENCY</p>
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-4 w-full sm:w-auto">
               <Link
                 href="/"
-                className="text-gray-600 hover:text-primary-600 transition"
+                className="text-sm sm:text-base text-gray-600 hover:text-primary-600 transition text-center sm:text-left"
               >
                 Ver Sitio Web
               </Link>
               <button
                 onClick={handleLogout}
-                className="flex items-center gap-2 text-gray-600 hover:text-red-600 transition"
+                className="flex items-center justify-center gap-2 text-sm sm:text-base text-gray-600 hover:text-red-600 transition"
               >
-                <LogOut size={20} />
+                <LogOut size={18} />
                 Cerrar Sesión
               </button>
             </div>
@@ -256,10 +256,10 @@ export default function DashboardPage() {
 
       {/* Tabs */}
       <div className="container mx-auto px-4 py-6">
-        <div className="flex gap-4 mb-6 border-b">
+        <div className="flex gap-2 sm:gap-4 mb-6 border-b overflow-x-auto">
           <button
             onClick={() => setActiveTab('contacts')}
-            className={`px-6 py-3 font-medium transition ${
+            className={`px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base font-medium transition whitespace-nowrap ${
               activeTab === 'contacts'
                 ? 'text-primary-600 border-b-2 border-primary-600'
                 : 'text-gray-600 hover:text-gray-900'
@@ -269,7 +269,7 @@ export default function DashboardPage() {
           </button>
           <button
             onClick={() => setActiveTab('projects')}
-            className={`px-6 py-3 font-medium transition ${
+            className={`px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base font-medium transition whitespace-nowrap ${
               activeTab === 'projects'
                 ? 'text-primary-600 border-b-2 border-primary-600'
                 : 'text-gray-600 hover:text-gray-900'
@@ -291,32 +291,32 @@ export default function DashboardPage() {
                 No hay contactos registrados aún.
               </div>
             ) : (
-              <div className="overflow-x-auto">
-                <table className="w-full">
+              <div className="overflow-x-auto -mx-4 sm:mx-0">
+                <table className="w-full min-w-[640px]">
                   <thead className="bg-gray-50">
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nombre</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Email</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Teléfono</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Mensaje</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Fecha</th>
+                      <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nombre</th>
+                      <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Email</th>
+                      <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase hidden sm:table-cell">Teléfono</th>
+                      <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Mensaje</th>
+                      <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase hidden md:table-cell">Fecha</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200">
                     {contacts.map((contact) => (
                       <tr key={contact.id} className="hover:bg-gray-50">
-                        <td className="px-6 py-4 whitespace-nowrap">
+                        <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center gap-2">
-                            <Mail className="text-gray-400" size={16} />
-                            <span className="font-medium text-gray-900">{contact.name}</span>
+                            <Mail className="text-gray-400 hidden sm:block" size={16} />
+                            <span className="font-medium text-gray-900 text-sm sm:text-base">{contact.name}</span>
                           </div>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-gray-600">{contact.email}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-gray-600">
+                        <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-gray-600 text-sm sm:text-base">{contact.email}</td>
+                        <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-gray-600 text-sm sm:text-base hidden sm:table-cell">
                           {contact.phone || '-'}
                         </td>
-                        <td className="px-6 py-4 text-gray-600 max-w-md truncate">{contact.message}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-gray-500 text-sm">
+                        <td className="px-3 sm:px-6 py-4 text-gray-600 max-w-xs sm:max-w-md truncate text-sm sm:text-base">{contact.message}</td>
+                        <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-gray-500 text-xs sm:text-sm hidden md:table-cell">
                           {formatDate(contact.created_at)}
                         </td>
                       </tr>
@@ -331,22 +331,22 @@ export default function DashboardPage() {
         {/* Projects Tab */}
         {activeTab === 'projects' && (
           <div>
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold text-gray-900">Gestión de Proyectos</h2>
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Gestión de Proyectos</h2>
               <button
                 onClick={() => {
                   resetForm()
                   setEditingProject(null)
                   setShowProjectModal(true)
                 }}
-                className="flex items-center gap-2 bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 transition"
+                className="flex items-center gap-2 bg-primary-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg hover:bg-primary-700 transition text-sm sm:text-base w-full sm:w-auto justify-center"
               >
-                <Plus size={20} />
+                <Plus size={18} />
                 Nuevo Proyecto
               </button>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
               {projects.map((project) => (
                 <div key={project.id} className="bg-white rounded-lg shadow overflow-hidden">
                   {project.image_url && (
@@ -403,14 +403,14 @@ export default function DashboardPage() {
 
       {/* Project Modal */}
       {showProjectModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="p-6 border-b">
-              <h2 className="text-2xl font-bold text-gray-900">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-2 sm:p-4 z-50">
+          <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-y-auto">
+            <div className="p-4 sm:p-6 border-b">
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-900">
                 {editingProject ? 'Editar Proyecto' : 'Nuevo Proyecto'}
               </h2>
             </div>
-            <form onSubmit={handleSaveProject} className="p-6 space-y-4">
+            <form onSubmit={handleSaveProject} className="p-4 sm:p-6 space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Título *
@@ -519,7 +519,7 @@ export default function DashboardPage() {
                   placeholder="React, Next.js, TypeScript"
                 />
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     URL del Proyecto
@@ -528,7 +528,7 @@ export default function DashboardPage() {
                     type="url"
                     value={projectForm.project_url}
                     onChange={(e) => setProjectForm({ ...projectForm, project_url: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm sm:text-base"
                     placeholder="https://proyecto.com"
                   />
                 </div>
@@ -540,7 +540,7 @@ export default function DashboardPage() {
                     type="url"
                     value={projectForm.github_url}
                     onChange={(e) => setProjectForm({ ...projectForm, github_url: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm sm:text-base"
                     placeholder="https://github.com/usuario/repo"
                   />
                 </div>
@@ -557,10 +557,10 @@ export default function DashboardPage() {
                   Proyecto Destacado
                 </label>
               </div>
-              <div className="flex gap-4 pt-4">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-4">
                 <button
                   type="submit"
-                  className="flex-1 bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 transition"
+                  className="flex-1 bg-primary-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg hover:bg-primary-700 transition text-sm sm:text-base"
                 >
                   {editingProject ? 'Actualizar' : 'Crear'} Proyecto
                 </button>
@@ -571,7 +571,7 @@ export default function DashboardPage() {
                     setEditingProject(null)
                     resetForm()
                   }}
-                  className="flex-1 bg-gray-200 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-300 transition"
+                  className="flex-1 bg-gray-200 text-gray-700 px-4 sm:px-6 py-2 sm:py-3 rounded-lg hover:bg-gray-300 transition text-sm sm:text-base"
                 >
                   Cancelar
                 </button>

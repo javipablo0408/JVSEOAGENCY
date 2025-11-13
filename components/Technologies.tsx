@@ -71,7 +71,7 @@ export default function Technologies() {
         href={tech.url}
         target="_blank"
         rel="noopener noreferrer"
-        className="group flex flex-col items-center justify-center p-6 rounded-xl border-2 border-gray-200 hover:border-primary-400 hover:shadow-xl transition-all duration-300 w-full h-36 bg-white hover:bg-primary-50"
+              className="group flex flex-col items-center justify-center p-4 sm:p-6 rounded-xl border-2 border-gray-200 hover:border-primary-400 hover:shadow-xl transition-all duration-300 w-full h-28 sm:h-36 bg-white hover:bg-primary-50"
         title={tech.name}
       >
         <div className="relative h-16 w-16 mb-4 flex items-center justify-center">
@@ -101,16 +101,16 @@ export default function Technologies() {
   return (
     <section className="py-16 px-4 bg-gradient-to-br from-gray-50 to-white">
       <div className="container mx-auto max-w-6xl">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+        <div className="text-center mb-10 sm:mb-12">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4 px-4">
             Tecnologías que Utilizamos
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto px-4">
             Trabajamos con las mejores herramientas y frameworks del mercado para crear soluciones de calidad
           </p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-6 items-center justify-items-center">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-4 sm:gap-6 items-center justify-items-center">
           {technologies.map((tech, index) => (
             <TechCard key={index} tech={tech} index={index} />
           ))}

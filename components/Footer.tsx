@@ -8,12 +8,12 @@ export default function Footer() {
   return (
     <footer className="bg-gray-900 text-gray-300 py-12 px-4">
       <div className="container mx-auto max-w-6xl">
-        <div className="grid md:grid-cols-4 gap-8 mb-8">
-          <div>
-            <h3 className="text-2xl font-bold text-white mb-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 mb-8">
+          <div className="sm:col-span-2 md:col-span-1">
+            <h3 className="text-xl sm:text-2xl font-bold text-white mb-3 sm:mb-4">
               JVSEO<span className="text-primary-400">AGENCY</span>
             </h3>
-            <p className="text-gray-400 leading-relaxed">
+            <p className="text-sm sm:text-base text-gray-400 leading-relaxed">
               Expertos en desarrollo web, aplicaciones y automatizaciones con IA.
               Transformamos ideas en soluciones digitales.
             </p>

@@ -10,7 +10,7 @@ export default function Header() {
     <header className="fixed top-0 w-full bg-white/90 backdrop-blur-md shadow-sm z-50">
       <nav className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
-          <div className="text-2xl font-bold text-primary-600">
+          <div className="text-xl sm:text-2xl font-bold text-primary-600">
             JVSEO<span className="text-primary-800">AGENCY</span>
           </div>
           

@@ -12,11 +12,11 @@ export default function Hero() {
               <Sparkles size={16} />
               <span className="text-sm font-medium">Expertos en Tecnología</span>
             </div>
-            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
               Desarrollo Web, Apps y{' '}
               <span className="text-primary-600">Automatizaciones IA</span>
             </h1>
-            <p className="text-xl text-gray-600 mb-8 leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-8 leading-relaxed">
               Transformamos tus ideas en soluciones digitales innovadoras. 
               Especialistas en desarrollo de aplicaciones web, móviles y automatizaciones 
               inteligentes con Inteligencia Artificial.
