@@ -26,19 +26,31 @@ export default function Blog() {
   }, [])
 
   const loadPosts = async () => {
-    const supabase = createClient()
-    const { data, error } = await supabase
-      .from('blog_posts')
-      .select('id, title, slug, excerpt, featured_image_url, published_at, created_at, featured')
-      .eq('published', true)
-      .order('published_at', { ascending: false, nullsFirst: false })
-      .order('created_at', { ascending: false })
-      .limit(3)
+    try {
+      const supabase = createClient()
+      const { data, error } = await supabase
+        .from('blog_posts')
+        .select('id, title, slug, excerpt, featured_image_url, published_at, created_at, featured')
+        .eq('published', true)
+        .order('published_at', { ascending: false, nullsFirst: false })
+        .order('created_at', { ascending: false })
+        .limit(3)
 
-    if (!error && data) {
-      setPosts(data as BlogPost[])
+      if (error) {
+        console.error('Error loading blog posts:', error)
+        setPosts([])
+      } else if (data) {
+        console.log('Blog posts loaded:', data.length)
+        setPosts(data as BlogPost[])
+      } else {
+        setPosts([])
+      }
+    } catch (error) {
+      console.error('Error loading blog posts:', error)
+      setPosts([])
+    } finally {
+      setLoading(false)
     }
-    setLoading(false)
   }
 
   if (loading) {

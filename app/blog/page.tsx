@@ -1,4 +1,4 @@
-import { supabase } from '@/lib/supabase'
+import { createClient } from '@/lib/supabase-server'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Calendar, Clock, ArrowRight } from 'lucide-react'
@@ -33,12 +33,14 @@ interface BlogPost {
 
 async function getBlogPosts() {
   try {
+    const supabase = await createClient()
     const { data, error } = await supabase
       .from('blog_posts')
       .select('id, title, slug, excerpt, featured_image_url, author_name, published_at, created_at, views, featured')
       .eq('published', true)
       .order('published_at', { ascending: false, nullsFirst: false })
       .order('created_at', { ascending: false })
+      .limit(100)
 
     if (error) {
       // Si la tabla no existe aún, retornar array vacío
@@ -47,9 +49,11 @@ async function getBlogPosts() {
         return []
       }
       console.error('Error fetching blog posts:', error)
+      console.error('Error details:', JSON.stringify(error, null, 2))
       return []
     }
 
+    console.log('Blog posts fetched:', data?.length || 0)
     return (data || []) as BlogPost[]
   } catch (error) {
     console.error('Error fetching blog posts:', error)
