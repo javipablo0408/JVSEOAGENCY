@@ -545,13 +545,13 @@ export default function DashboardPage() {
         <div>
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
             <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Gestión del Blog</h2>
-            <Link
+            <a
               href="/admin/blog/new"
               className="flex items-center gap-2 bg-primary-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg hover:bg-primary-700 transition text-sm sm:text-base w-full sm:w-auto justify-center"
             >
               <Plus size={18} />
               Nuevo Artículo
-            </Link>
+            </a>
           </div>
 
           <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">

@@ -3,6 +3,8 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Calendar, Clock, ArrowRight } from 'lucide-react'
 import type { Metadata } from 'next'
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
 
 export const metadata: Metadata = {
   title: 'Blog - Desarrollo Web Madrid | JVSEOAGENCY',
@@ -70,9 +72,11 @@ export default async function BlogPage() {
   }
 
   return (
-    <main className="min-h-screen pt-24">
-      {/* Header */}
-      <section className="bg-gradient-to-br from-primary-50 to-white py-16 px-4">
+    <>
+      <Header />
+      <main className="min-h-screen pt-24">
+        {/* Header Section */}
+        <section className="bg-gradient-to-br from-primary-50 to-white py-16 px-4">
         <div className="container mx-auto max-w-6xl">
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-4 text-center">
             Blog de Desarrollo Web
@@ -182,7 +186,9 @@ export default async function BlogPage() {
           )}
         </div>
       </section>
-    </main>
+      </main>
+      <Footer />
+    </>
   )
 }
 

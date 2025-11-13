@@ -4,6 +4,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Calendar, Clock, ArrowLeft, Share2 } from 'lucide-react'
 import type { Metadata } from 'next'
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
 
 interface BlogPost {
   id: string
@@ -134,7 +136,9 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
   const shareUrl = `https://jvseoagency.com/blog/${post.slug}`
 
   return (
-    <main className="min-h-screen pt-24">
+    <>
+      <Header />
+      <main className="min-h-screen pt-24">
       {/* Back Button */}
       <div className="container mx-auto max-w-4xl px-4 py-6">
         <Link
@@ -243,6 +247,8 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
         </footer>
       </article>
     </main>
+    <Footer />
+    </>
   )
 }
 
