@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase'
+import { supabase } from '@/lib/supabase'
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -23,7 +23,6 @@ interface BlogPost {
 }
 
 async function getBlogPost(slug: string) {
-  const supabase = createClient()
   const { data, error } = await supabase
     .from('blog_posts')
     .select('*')
@@ -45,7 +44,6 @@ async function getBlogPost(slug: string) {
 }
 
 async function getAllSlugs() {
-  const supabase = createClient()
   const { data } = await supabase
     .from('blog_posts')
     .select('slug')

@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase'
+import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Calendar, Clock, ArrowRight } from 'lucide-react'
@@ -30,7 +30,6 @@ interface BlogPost {
 }
 
 async function getBlogPosts() {
-  const supabase = createClient()
   const { data, error } = await supabase
     .from('blog_posts')
     .select('id, title, slug, excerpt, featured_image_url, author_name, published_at, created_at, views, featured')

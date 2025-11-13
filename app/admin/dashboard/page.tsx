@@ -6,6 +6,7 @@ import { useAuth } from '@/contexts/AuthContext'
 import { createClient } from '@/lib/supabase-client'
 import { LogOut, Mail, Phone, Calendar, MessageSquare, Plus, FolderOpen, Trash2, Edit2, Upload, X, FileText } from 'lucide-react'
 import Link from 'next/link'
+import Image from 'next/image'
 
 interface Contact {
   id: string
@@ -75,6 +76,7 @@ export default function DashboardPage() {
     loadContacts()
     loadProjects()
     loadBlogPosts()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const loadContacts = async () => {
@@ -482,13 +484,16 @@ export default function DashboardPage() {
               {projects.map((project) => (
                 <div key={project.id} className="bg-white rounded-lg shadow overflow-hidden">
                   {project.image_url && (
-                    <img
-                      src={project.image_url}
-                      alt={project.title}
-                      className="w-full h-48 object-cover"
-                      loading="lazy"
-                      decoding="async"
-                    />
+                    <div className="relative w-full h-48">
+                      <Image
+                        src={project.image_url}
+                        alt={project.title}
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        className="object-cover"
+                        loading="lazy"
+                      />
+                    </div>
                   )}
                   <div className="p-6">
                     <div className="flex items-start justify-between mb-2">
@@ -553,12 +558,16 @@ export default function DashboardPage() {
             {blogPosts.map((post) => (
               <div key={post.id} className="bg-white rounded-lg shadow overflow-hidden">
                 {post.featured_image_url && (
-                  <img
-                    src={post.featured_image_url}
-                    alt={post.title}
-                    className="w-full h-48 object-cover"
-                    loading="lazy"
-                  />
+                  <div className="relative w-full h-48">
+                    <Image
+                      src={post.featured_image_url}
+                      alt={post.title}
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      className="object-cover"
+                      loading="lazy"
+                    />
+                  </div>
                 )}
                 <div className="p-6">
                   <div className="flex items-start justify-between mb-2">
@@ -653,11 +662,13 @@ export default function DashboardPage() {
                 
                 {/* Preview de imagen */}
                 {imagePreview && (
-                  <div className="mb-4 relative">
-                    <img
+                  <div className="mb-4 relative h-48">
+                    <Image
                       src={imagePreview}
                       alt="Preview"
-                      className="w-full h-48 object-cover rounded-lg border-2 border-gray-200"
+                      fill
+                      sizes="(max-width: 768px) 100vw, 768px"
+                      className="object-cover rounded-lg border-2 border-gray-200"
                     />
                     <button
                       type="button"
@@ -714,7 +725,7 @@ export default function DashboardPage() {
                     <div className="text-xs mt-2 pt-2 border-t border-red-200">
                       <strong>Verifica:</strong>
                       <ul className="list-disc list-inside mt-1 space-y-1">
-                        <li>Que el bucket "project-images" exista en Supabase Storage</li>
+                        <li>Que el bucket &quot;project-images&quot; exista en Supabase Storage</li>
                         <li>Que el bucket esté marcado como público</li>
                         <li>Que las políticas de Storage estén configuradas (ver STORAGE-SETUP.md)</li>
                         <li>Que estés autenticado correctamente</li>
