@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import { useAuth } from '@/contexts/AuthContext'
 import { createClient } from '@/lib/supabase-client'
@@ -32,17 +32,10 @@ export default function EditBlogPostPage() {
     keywords: '',
     published: false,
     featured: false,
+    published_at: null as string | null,
   })
 
-  useEffect(() => {
-    if (!user) {
-      router.push('/admin/login')
-      return
-    }
-    loadPost()
-  }, [user, router, postId])
-
-  const loadPost = async () => {
+  const loadPost = useCallback(async () => {
     try {
       const { data, error } = await supabase
         .from('blog_posts')
@@ -70,6 +63,7 @@ export default function EditBlogPostPage() {
           keywords: (data.keywords || []).join(', '),
           published: data.published || false,
           featured: data.featured || false,
+          published_at: data.published_at || null,
         })
         setImagePreview(data.featured_image_url || null)
       }
@@ -78,7 +72,15 @@ export default function EditBlogPostPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [postId, router, supabase])
+
+  useEffect(() => {
+    if (!user) {
+      router.push('/admin/login')
+      return
+    }
+    loadPost()
+  }, [user, router, loadPost])
 
   const generateSlug = (title: string) => {
     return title
@@ -161,11 +163,23 @@ export default function EditBlogPostPage() {
     setSaving(true)
 
     try {
-      const postData = {
+      const postData: any = {
         ...formData,
         slug: formData.slug || generateSlug(formData.title),
         keywords: formData.keywords.split(',').map(k => k.trim()).filter(k => k),
-        published_at: formData.published && !formData.published_at ? new Date().toISOString() : undefined,
+      }
+
+      // Solo establecer published_at si se está publicando y no tiene fecha previa
+      if (formData.published && !formData.published_at) {
+        postData.published_at = new Date().toISOString()
+      } else if (!formData.published) {
+        // Si se despublica, mantener la fecha pero no es necesario actualizarla
+        postData.published_at = formData.published_at
+      }
+
+      // Eliminar published_at del objeto si es null para evitar errores
+      if (postData.published_at === null) {
+        delete postData.published_at
       }
 
       const { error } = await supabase
