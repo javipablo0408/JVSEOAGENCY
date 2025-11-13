@@ -23,33 +23,59 @@ interface BlogPost {
 }
 
 async function getBlogPost(slug: string) {
-  const { data, error } = await supabase
-    .from('blog_posts')
-    .select('*')
-    .eq('slug', slug)
-    .eq('published', true)
-    .single()
+  try {
+    const { data, error } = await supabase
+      .from('blog_posts')
+      .select('*')
+      .eq('slug', slug)
+      .eq('published', true)
+      .single()
 
-  if (error || !data) {
+    if (error || !data) {
+      // Si la tabla no existe aún, retornar null
+      if (error?.code === 'PGRST205' || error?.message?.includes('Could not find the table')) {
+        return null
+      }
+      return null
+    }
+
+    // Incrementar views (opcional, se puede hacer con un endpoint API)
+    try {
+      await supabase
+        .from('blog_posts')
+        .update({ views: (data.views || 0) + 1 })
+        .eq('id', data.id)
+    } catch (updateError) {
+      // Ignorar errores al actualizar views
+      console.log('Could not update views:', updateError)
+    }
+
+    return data as BlogPost
+  } catch (error) {
+    console.error('Error fetching blog post:', error)
     return null
   }
-
-  // Incrementar views (opcional, se puede hacer con un endpoint API)
-  await supabase
-    .from('blog_posts')
-    .update({ views: (data.views || 0) + 1 })
-    .eq('id', data.id)
-
-  return data as BlogPost
 }
 
 async function getAllSlugs() {
-  const { data } = await supabase
-    .from('blog_posts')
-    .select('slug')
-    .eq('published', true)
+  try {
+    const { data, error } = await supabase
+      .from('blog_posts')
+      .select('slug')
+      .eq('published', true)
 
-  return (data || []).map(post => post.slug)
+    if (error) {
+      // Si la tabla no existe aún, retornar array vacío
+      if (error.code === 'PGRST205' || error.message?.includes('Could not find the table')) {
+        return []
+      }
+      return []
+    }
+
+    return (data || []).map(post => post.slug)
+  } catch (error) {
+    return []
+  }
 }
 
 export async function generateStaticParams() {

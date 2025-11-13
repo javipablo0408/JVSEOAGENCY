@@ -91,9 +91,9 @@ const nextConfig = {
       },
     ]
   },
-  experimental: {
-    optimizeCss: true,
-  },
+  // experimental: {
+  //   optimizeCss: true, // Requiere critters package
+  // },
 }
 
 module.exports = nextConfig

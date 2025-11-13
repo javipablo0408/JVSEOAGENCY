@@ -30,19 +30,29 @@ interface BlogPost {
 }
 
 async function getBlogPosts() {
-  const { data, error } = await supabase
-    .from('blog_posts')
-    .select('id, title, slug, excerpt, featured_image_url, author_name, published_at, created_at, views, featured')
-    .eq('published', true)
-    .order('published_at', { ascending: false, nullsFirst: false })
-    .order('created_at', { ascending: false })
+  try {
+    const { data, error } = await supabase
+      .from('blog_posts')
+      .select('id, title, slug, excerpt, featured_image_url, author_name, published_at, created_at, views, featured')
+      .eq('published', true)
+      .order('published_at', { ascending: false, nullsFirst: false })
+      .order('created_at', { ascending: false })
 
-  if (error) {
+    if (error) {
+      // Si la tabla no existe aún, retornar array vacío
+      if (error.code === 'PGRST205' || error.message?.includes('Could not find the table')) {
+        console.log('Blog table not found yet. Run blog-setup.sql in Supabase.')
+        return []
+      }
+      console.error('Error fetching blog posts:', error)
+      return []
+    }
+
+    return (data || []) as BlogPost[]
+  } catch (error) {
     console.error('Error fetching blog posts:', error)
     return []
   }
-
-  return (data || []) as BlogPost[]
 }
 
 export default async function BlogPage() {
