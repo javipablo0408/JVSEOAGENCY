@@ -12,5 +12,5 @@ if (!supabaseAnonKey) {
 }
 
 // Cliente para uso en componentes del servidor (sin cookies)
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+export const supabase = createClient(supabaseUrl as string, supabaseAnonKey as string)
 
