@@ -6,6 +6,7 @@ import About from '@/components/About'
 import Contact from '@/components/Contact'
 import LocalSEO from '@/components/LocalSEO'
 import Footer from '@/components/Footer'
+import ScrollToHash from '@/components/ScrollToHash'
 
 // Lazy load componentes pesados que no están en el viewport inicial
 const Technologies = dynamic(() => import('@/components/Technologies'), {
@@ -51,6 +52,7 @@ const Blog = dynamic(() => import('@/components/Blog'), {
 export default function Home() {
   return (
     <main className="min-h-screen">
+      <ScrollToHash />
       <Header />
       <Hero />
       <Services />

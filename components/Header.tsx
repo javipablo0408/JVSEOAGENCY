@@ -26,18 +26,6 @@ export default function Header() {
     // Si no estamos en la página principal, redirigir primero a la página principal con el hash
     if (!isHomePage) {
       router.push(`/${targetId}`)
-      // Esperar a que la página cargue y luego hacer scroll
-      setTimeout(() => {
-        const targetElement = document.querySelector(targetId)
-        if (targetElement) {
-          const headerHeight = 80
-          const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight
-          window.scrollTo({
-            top: targetPosition,
-            behavior: 'smooth'
-          })
-        }
-      }, 100)
       return
     }
     
