@@ -9,18 +9,22 @@ const nextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     minimumCacheTTL: 60,
     domains: [
-      'tonuvghrtfiihwslcpze.supabase.co',
+      ...(process.env.NEXT_PUBLIC_SUPABASE_URL 
+        ? [new URL(process.env.NEXT_PUBLIC_SUPABASE_URL).hostname]
+        : []),
       'cdn.jsdelivr.net',
       'supabase.com',
       'avatars.githubusercontent.com',
       'raw.githubusercontent.com',
     ],
     remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'tonuvghrtfiihwslcpze.supabase.co',
-        pathname: '/storage/v1/object/public/**',
-      },
+      ...(process.env.NEXT_PUBLIC_SUPABASE_URL
+        ? [{
+            protocol: 'https',
+            hostname: new URL(process.env.NEXT_PUBLIC_SUPABASE_URL).hostname,
+            pathname: '/storage/v1/object/public/**',
+          }]
+        : []),
       {
         protocol: 'https',
         hostname: 'cdn.jsdelivr.net',
