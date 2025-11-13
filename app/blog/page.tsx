@@ -51,7 +51,6 @@ async function getBlogPosts() {
 
     return (data || []) as BlogPost[]
   } catch (error) {
-    console.error('Error fetching blog posts:', error)
     return []
   }
 }
