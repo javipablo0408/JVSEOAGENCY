@@ -23,12 +23,14 @@ export default function About() {
         <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
           <div>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4 sm:mb-6">
-              ¿Por qué elegirnos?
+              ¿Por qué elegirnos en Madrid?
             </h2>
             <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-6 sm:mb-8 leading-relaxed">
-              En JVSEOAGENCY combinamos experiencia técnica con creatividad 
+              En JVSEOAGENCY, agencia de desarrollo web en Madrid, combinamos experiencia técnica con creatividad 
               para ofrecer soluciones que realmente funcionan. Nos especializamos 
-              en crear productos digitales que impulsan el crecimiento de tu negocio.
+              en crear productos digitales que impulsan el crecimiento de tu negocio en España. 
+              Trabajamos con empresas de Madrid y toda España, ofreciendo servicios de desarrollo web profesional 
+              adaptados a las necesidades del mercado español.
             </p>
             <ul className="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
               {features.map((feature, index) => (

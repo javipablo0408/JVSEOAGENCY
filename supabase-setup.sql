@@ -101,12 +101,22 @@ CREATE TRIGGER update_projects_updated_at BEFORE UPDATE ON projects
 -- ============================================
 -- CONFIGURACIÓN DE STORAGE PARA IMÁGENES
 -- ============================================
+-- IMPORTANTE: Primero debes crear el bucket manualmente en Supabase
+-- 
+-- PASOS MANUALES REQUERIDOS:
 -- 1. Ve a Storage en el panel de Supabase
--- 2. Crea un nuevo bucket llamado "project-images"
--- 3. Configura el bucket como público (Public bucket: ON)
--- 4. Configura las políticas de Storage:
+-- 2. Haz clic en "New bucket" o "Create a new bucket"
+-- 3. Nombre: "project-images" (exactamente así)
+-- 4. Marca "Public bucket" como ON (MUY IMPORTANTE)
+-- 5. Opcional: File size limit: 5 MB
+-- 6. Opcional: Allowed MIME types: image/jpeg, image/png, image/gif, image/webp
+-- 7. Haz clic en "Create bucket"
+--
+-- DESPUÉS ejecuta las políticas SQL siguientes:
 
 -- Política para permitir subida de archivos a usuarios autenticados
+-- NOTA: Si la política ya existe, elimínala primero o usa CREATE POLICY IF NOT EXISTS
+DROP POLICY IF EXISTS "Allow authenticated upload to project-images" ON storage.objects;
 CREATE POLICY "Allow authenticated upload to project-images"
 ON storage.objects
 FOR INSERT
@@ -114,6 +124,7 @@ TO authenticated
 WITH CHECK (bucket_id = 'project-images');
 
 -- Política para permitir lectura pública de imágenes
+DROP POLICY IF EXISTS "Allow public read from project-images" ON storage.objects;
 CREATE POLICY "Allow public read from project-images"
 ON storage.objects
 FOR SELECT
@@ -121,6 +132,7 @@ TO public
 USING (bucket_id = 'project-images');
 
 -- Política para permitir actualización a usuarios autenticados
+DROP POLICY IF EXISTS "Allow authenticated update to project-images" ON storage.objects;
 CREATE POLICY "Allow authenticated update to project-images"
 ON storage.objects
 FOR UPDATE
@@ -128,6 +140,7 @@ TO authenticated
 USING (bucket_id = 'project-images');
 
 -- Política para permitir eliminación a usuarios autenticados
+DROP POLICY IF EXISTS "Allow authenticated delete from project-images" ON storage.objects;
 CREATE POLICY "Allow authenticated delete from project-images"
 ON storage.objects
 FOR DELETE

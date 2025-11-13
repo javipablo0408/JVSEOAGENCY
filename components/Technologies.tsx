@@ -83,7 +83,8 @@ export default function Technologies() {
               height={64}
               className="object-contain group-hover:scale-110 transition-transform duration-300"
               onError={handleError}
-              unoptimized
+              loading="lazy"
+              quality={75}
             />
           ) : (
             <div className="w-16 h-16 flex items-center justify-center bg-gray-100 rounded-lg">

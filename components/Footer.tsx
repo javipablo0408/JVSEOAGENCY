@@ -14,8 +14,9 @@ export default function Footer() {
               JVSEO<span className="text-primary-400">AGENCY</span>
             </h3>
             <p className="text-sm sm:text-base text-gray-400 leading-relaxed">
-              Expertos en desarrollo web, aplicaciones y automatizaciones con IA.
-              Transformamos ideas en soluciones digitales.
+              Agencia de desarrollo web en Madrid, España. Expertos en desarrollo web profesional, 
+              aplicaciones móviles y automatizaciones con IA. Transformamos ideas en soluciones digitales 
+              para empresas en Madrid y toda España.
             </p>
           </div>
           <div>

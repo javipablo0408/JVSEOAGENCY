@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase-client'
 import { ExternalLink, Github, Star } from 'lucide-react'
+import Image from 'next/image'
 
 interface Project {
   id: string
@@ -105,13 +106,17 @@ function ProjectCard({ project, featured = false }: { project: Project; featured
     <div className={`bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2 ${featured ? 'border-2 border-yellow-200' : ''}`}>
       {project.image_url && (
         <div className="relative h-48 overflow-hidden">
-          <img
+          <Image
             src={project.image_url}
             alt={project.title}
-            className="w-full h-full object-cover"
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="object-cover"
+            loading="lazy"
+            quality={85}
           />
           {featured && (
-            <div className="absolute top-4 right-4 bg-yellow-500 text-white px-3 py-1 rounded-full text-sm font-medium flex items-center gap-1">
+            <div className="absolute top-4 right-4 bg-yellow-500 text-white px-3 py-1 rounded-full text-sm font-medium flex items-center gap-1 z-10">
               <Star size={14} />
               Destacado
             </div>

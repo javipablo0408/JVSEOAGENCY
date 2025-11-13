@@ -49,6 +49,8 @@ export default function DashboardPage() {
   })
   const [uploadingImage, setUploadingImage] = useState(false)
   const [imagePreview, setImagePreview] = useState<string | null>(null)
+  const [uploadError, setUploadError] = useState<string | null>(null)
+  const [uploadSuccess, setUploadSuccess] = useState(false)
 
   useEffect(() => {
     loadContacts()
@@ -111,28 +113,80 @@ export default function DashboardPage() {
     setUploadingImage(true)
 
     try {
-      // Crear preview local
+      // Crear preview local primero
       const reader = new FileReader()
       reader.onloadend = () => {
         setImagePreview(reader.result as string)
       }
       reader.readAsDataURL(file)
 
+      // Verificar que el usuario esté autenticado
+      const { data: { session } } = await supabase.auth.getSession()
+      if (!session) {
+        throw new Error('Debes estar autenticado para subir imágenes')
+      }
+
       // Generar nombre único para el archivo
-      const fileExt = file.name.split('.').pop()
+      const fileExt = file.name.split('.').pop()?.toLowerCase() || 'jpg'
       const fileName = `${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`
       const filePath = `projects/${fileName}`
+
+      // Verificar si el bucket existe
+      const { data: buckets, error: bucketError } = await supabase.storage.listBuckets()
+      
+      if (bucketError) {
+        console.error('Error al listar buckets:', bucketError)
+        throw new Error('Error al acceder a Storage. Verifica la configuración.')
+      }
+
+      const bucketExists = buckets?.some(b => b.name === 'project-images')
+      
+      if (!bucketExists) {
+        // Intentar crear el bucket si no existe (solo si tienes permisos)
+        const { error: createError } = await supabase.storage.createBucket('project-images', {
+          public: true,
+          allowedMimeTypes: ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
+          fileSizeLimit: 5242880 // 5MB
+        })
+        
+        if (createError) {
+          console.error('Error al crear bucket:', createError)
+          throw new Error('El bucket "project-images" no existe. Por favor, créalo manualmente en Supabase Storage y configúralo como público.')
+        }
+      }
 
       // Subir imagen a Supabase Storage
       const { error: uploadError, data } = await supabase.storage
         .from('project-images')
         .upload(filePath, file, {
           cacheControl: '3600',
-          upsert: false
+          upsert: false,
+          contentType: file.type
         })
 
       if (uploadError) {
-        throw uploadError
+        console.error('Error de upload:', uploadError)
+        
+        // Mensajes de error más específicos
+        if (uploadError.message.includes('Bucket not found')) {
+          throw new Error('El bucket "project-images" no existe. Créalo en Supabase Storage.')
+        } else if (uploadError.message.includes('new row violates row-level security')) {
+          throw new Error('Error de permisos. Verifica las políticas de Storage en Supabase.')
+        } else if (uploadError.message.includes('The resource already exists')) {
+          // Si el archivo ya existe, usar upsert
+          const { error: upsertError } = await supabase.storage
+            .from('project-images')
+            .update(filePath, file, {
+              cacheControl: '3600',
+              contentType: file.type
+            })
+          
+          if (upsertError) {
+            throw upsertError
+          }
+        } else {
+          throw uploadError
+        }
       }
 
       // Obtener URL pública de la imagen
@@ -140,10 +194,42 @@ export default function DashboardPage() {
         .from('project-images')
         .getPublicUrl(filePath)
 
+      if (!publicUrl) {
+        throw new Error('No se pudo obtener la URL pública de la imagen')
+      }
+
       setProjectForm({ ...projectForm, image_url: publicUrl })
+      setUploadSuccess(true)
+      setUploadError(null)
+      
+      // Ocultar mensaje de éxito después de 3 segundos
+      setTimeout(() => {
+        setUploadSuccess(false)
+      }, 3000)
+      
+      console.log('Imagen subida exitosamente:', publicUrl)
     } catch (error: any) {
       console.error('Error al subir imagen:', error)
-      alert('Error al subir la imagen. Por favor, intenta de nuevo.')
+      
+      // Mensaje de error más descriptivo
+      let errorMessage = error.message || 'Error desconocido al subir la imagen'
+      
+      // Mensajes más específicos
+      if (errorMessage.includes('Bucket not found') || errorMessage.includes('bucket')) {
+        errorMessage = 'El bucket "project-images" no existe. Por favor, créalo en Supabase Storage y configúralo como público.'
+      } else if (errorMessage.includes('row-level security') || errorMessage.includes('RLS')) {
+        errorMessage = 'Error de permisos. Verifica las políticas de Storage en Supabase.'
+      } else if (errorMessage.includes('authenticated')) {
+        errorMessage = 'Debes estar autenticado para subir imágenes. Por favor, inicia sesión nuevamente.'
+      }
+      
+      setUploadError(errorMessage)
+      setUploadSuccess(false)
+      
+      // Ocultar mensaje de error después de 10 segundos
+      setTimeout(() => {
+        setUploadError(null)
+      }, 10000)
     } finally {
       setUploadingImage(false)
     }
@@ -196,6 +282,8 @@ export default function DashboardPage() {
       featured: false,
     })
     setImagePreview(null)
+    setUploadError(null)
+    setUploadSuccess(false)
   }
 
   const openEditModal = (project: Project) => {
@@ -210,6 +298,8 @@ export default function DashboardPage() {
       featured: project.featured,
     })
     setImagePreview(project.image_url || null)
+    setUploadError(null)
+    setUploadSuccess(false)
     setShowProjectModal(true)
   }
 
@@ -354,6 +444,8 @@ export default function DashboardPage() {
                       src={project.image_url}
                       alt={project.title}
                       className="w-full h-48 object-cover"
+                      loading="lazy"
+                      decoding="async"
                     />
                   )}
                   <div className="p-6">
@@ -490,6 +582,28 @@ export default function DashboardPage() {
                   </label>
                 </div>
 
+                {/* Mensajes de éxito y error */}
+                {uploadSuccess && (
+                  <div className="mb-4 bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg text-sm">
+                    ✅ Imagen subida exitosamente
+                  </div>
+                )}
+                {uploadError && (
+                  <div className="mb-4 bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg text-sm">
+                    <div className="font-semibold mb-2">❌ Error al subir imagen:</div>
+                    <div className="mb-2">{uploadError}</div>
+                    <div className="text-xs mt-2 pt-2 border-t border-red-200">
+                      <strong>Verifica:</strong>
+                      <ul className="list-disc list-inside mt-1 space-y-1">
+                        <li>Que el bucket "project-images" exista en Supabase Storage</li>
+                        <li>Que el bucket esté marcado como público</li>
+                        <li>Que las políticas de Storage estén configuradas (ver STORAGE-SETUP.md)</li>
+                        <li>Que estés autenticado correctamente</li>
+                      </ul>
+                    </div>
+                  </div>
+                )}
+
                 {/* Opción 2: URL manual (alternativa) */}
                 <div className="text-sm text-gray-600 mb-2">O ingresa una URL:</div>
                 <input
@@ -497,6 +611,8 @@ export default function DashboardPage() {
                   value={projectForm.image_url}
                   onChange={(e) => {
                     setProjectForm({ ...projectForm, image_url: e.target.value })
+                    setUploadError(null)
+                    setUploadSuccess(false)
                     if (e.target.value) {
                       setImagePreview(e.target.value)
                     } else {
