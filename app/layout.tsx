@@ -3,6 +3,8 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import { AuthProvider } from '@/contexts/AuthContext'
 import StructuredData from '@/components/StructuredData'
+import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -101,6 +103,8 @@ export default function RootLayout({
       <body className={inter.className}>
         <StructuredData />
         <AuthProvider>{children}</AuthProvider>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )

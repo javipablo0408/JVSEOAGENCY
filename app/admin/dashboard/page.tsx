@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/contexts/AuthContext'
 import { createClient } from '@/lib/supabase-client'
-import { LogOut, Mail, Phone, Calendar, MessageSquare, Plus, FolderOpen, Trash2, Edit2, Upload, X } from 'lucide-react'
+import { LogOut, Mail, Phone, Calendar, MessageSquare, Plus, FolderOpen, Trash2, Edit2, Upload, X, FileText } from 'lucide-react'
 import Link from 'next/link'
 
 interface Contact {
@@ -28,13 +28,32 @@ interface Project {
   created_at: string
 }
 
+interface BlogPost {
+  id: string
+  title: string
+  slug: string
+  excerpt: string
+  content: string
+  featured_image_url: string | null
+  author_name: string
+  meta_title: string | null
+  meta_description: string | null
+  keywords: string[]
+  published: boolean
+  featured: boolean
+  views: number
+  published_at: string | null
+  created_at: string
+}
+
 export default function DashboardPage() {
   const { signOut } = useAuth()
   const router = useRouter()
   const supabase = createClient()
-  const [activeTab, setActiveTab] = useState<'contacts' | 'projects'>('contacts')
+  const [activeTab, setActiveTab] = useState<'contacts' | 'projects' | 'blog'>('contacts')
   const [contacts, setContacts] = useState<Contact[]>([])
   const [projects, setProjects] = useState<Project[]>([])
+  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([])
   const [loading, setLoading] = useState(true)
   const [showProjectModal, setShowProjectModal] = useState(false)
   const [editingProject, setEditingProject] = useState<Project | null>(null)
@@ -55,6 +74,7 @@ export default function DashboardPage() {
   useEffect(() => {
     loadContacts()
     loadProjects()
+    loadBlogPosts()
   }, [])
 
   const loadContacts = async () => {
@@ -77,6 +97,17 @@ export default function DashboardPage() {
 
     if (!error && data) {
       setProjects(data)
+    }
+  }
+
+  const loadBlogPosts = async () => {
+    const { data, error } = await supabase
+      .from('blog_posts')
+      .select('*')
+      .order('created_at', { ascending: false })
+
+    if (!error && data) {
+      setBlogPosts(data)
     }
   }
 
@@ -367,6 +398,17 @@ export default function DashboardPage() {
           >
             Proyectos ({projects.length})
           </button>
+          <button
+            onClick={() => setActiveTab('blog')}
+            className={`px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base font-medium transition whitespace-nowrap ${
+              activeTab === 'blog'
+                ? 'text-primary-600 border-b-2 border-primary-600'
+                : 'text-gray-600 hover:text-gray-900'
+            }`}
+          >
+            <FileText size={18} className="inline mr-2" />
+            Blog ({blogPosts.length})
+          </button>
         </div>
 
         {/* Contacts Tab */}
@@ -492,6 +534,83 @@ export default function DashboardPage() {
           </div>
         )}
       </div>
+
+      {/* Blog Tab */}
+      {activeTab === 'blog' && (
+        <div>
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Gestión del Blog</h2>
+            <Link
+              href="/admin/blog/new"
+              className="flex items-center gap-2 bg-primary-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg hover:bg-primary-700 transition text-sm sm:text-base w-full sm:w-auto justify-center"
+            >
+              <Plus size={18} />
+              Nuevo Artículo
+            </Link>
+          </div>
+
+          <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            {blogPosts.map((post) => (
+              <div key={post.id} className="bg-white rounded-lg shadow overflow-hidden">
+                {post.featured_image_url && (
+                  <img
+                    src={post.featured_image_url}
+                    alt={post.title}
+                    className="w-full h-48 object-cover"
+                    loading="lazy"
+                  />
+                )}
+                <div className="p-6">
+                  <div className="flex items-start justify-between mb-2">
+                    <h3 className="text-lg font-bold text-gray-900 line-clamp-2">{post.title}</h3>
+                    <div className="flex gap-2 ml-2">
+                      {post.published && (
+                        <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">Publicado</span>
+                      )}
+                      {post.featured && (
+                        <span className="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded">Destacado</span>
+                      )}
+                    </div>
+                  </div>
+                  <p className="text-gray-600 mb-4 text-sm line-clamp-2">{post.excerpt}</p>
+                  <div className="flex items-center gap-2 text-xs text-gray-500 mb-4">
+                    <span>{post.views} vistas</span>
+                    {post.published_at && (
+                      <span>• {formatDate(post.published_at)}</span>
+                    )}
+                  </div>
+                  <div className="flex gap-2">
+                    <Link
+                      href={`/admin/blog/${post.id}`}
+                      className="flex-1 flex items-center justify-center gap-2 bg-gray-100 text-gray-700 px-4 py-2 rounded hover:bg-gray-200 transition text-sm"
+                    >
+                      <Edit2 size={16} />
+                      Editar
+                    </Link>
+                    <button
+                      onClick={async () => {
+                        if (!confirm('¿Estás seguro de que quieres eliminar este artículo?')) return
+                        const { error } = await supabase.from('blog_posts').delete().eq('id', post.id)
+                        if (!error) loadBlogPosts()
+                      }}
+                      className="flex items-center justify-center gap-2 bg-red-100 text-red-700 px-4 py-2 rounded hover:bg-red-200 transition text-sm"
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {blogPosts.length === 0 && (
+            <div className="bg-white rounded-lg shadow p-12 text-center">
+              <FileText className="mx-auto text-gray-400 mb-4" size={48} />
+              <p className="text-gray-500">No hay artículos aún. Crea tu primer artículo.</p>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Project Modal */}
       {showProjectModal && (

@@ -6,6 +6,7 @@ import About from '@/components/About'
 import Contact from '@/components/Contact'
 import LocalSEO from '@/components/LocalSEO'
 import Footer from '@/components/Footer'
+import Blog from '@/components/Blog'
 
 // Lazy load componentes pesados que no están en el viewport inicial
 const Technologies = dynamic(() => import('@/components/Technologies'), {
@@ -44,6 +45,7 @@ export default function Home() {
       <Technologies />
       <About />
       <Projects />
+      <Blog />
       <Contact />
       <LocalSEO />
       <Footer />
