@@ -2,6 +2,7 @@
 
 import { Code, Globe, Zap, Smartphone, Database, Bot } from 'lucide-react'
 import { useTranslations } from 'next-intl'
+import Link from 'next/link'
 
 export default function Services() {
   const t = useTranslations('services')
