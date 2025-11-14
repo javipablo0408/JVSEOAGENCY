@@ -144,7 +144,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       description: translatedMetaDescription,
       images: post.featured_image_url ? [{ url: post.featured_image_url }] : undefined,
       type: 'article',
-      publishedTime: post.published_at,
+      publishedTime: post.published_at || undefined,
       authors: [post.author_name],
     },
     twitter: {
