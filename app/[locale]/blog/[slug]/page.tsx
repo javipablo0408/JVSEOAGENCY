@@ -130,10 +130,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     }
   }
   
-  const translatedTitle = await getTranslatedField(post, 'title', locale)
-  const translatedExcerpt = await getTranslatedField(post, 'excerpt', locale)
-  const translatedMetaTitle = (await getTranslatedField(post, 'meta_title', locale)) || translatedTitle
-  const translatedMetaDescription = (await getTranslatedField(post, 'meta_description', locale)) || translatedExcerpt
+      const translatedTitle = getTranslatedField(post, 'title', locale)
+      const translatedExcerpt = getTranslatedField(post, 'excerpt', locale)
+      const translatedMetaTitle = getTranslatedField(post, 'meta_title', locale) || translatedTitle
+      const translatedMetaDescription = getTranslatedField(post, 'meta_description', locale) || translatedExcerpt
 
   return {
     title: translatedMetaTitle,
@@ -156,12 +156,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   }
 }
 
-// Función helper para obtener el campo traducido
-async function getTranslatedField(
+// Función helper para obtener el campo traducido (solo usa traducciones guardadas)
+function getTranslatedField(
   post: BlogPost, 
   field: 'title' | 'excerpt' | 'content' | 'meta_title' | 'meta_description', 
   locale: string
-): Promise<string> {
+): string {
   // Si el locale es español, usar campos originales
   if (locale === 'es') {
     return post[field] || ''
@@ -176,41 +176,8 @@ async function getTranslatedField(
     return translatedValue as string
   }
   
-  // Si no existe traducción, traducir automáticamente
-  const originalText = post[field] || ''
-  if (!originalText || originalText.trim().length === 0) {
-    return ''
-  }
-  
-  try {
-    const { translateText } = await import('@/lib/translations')
-    const translated = await translateText(originalText, locale, 'es')
-    
-    // Guardar la traducción en la base de datos para próximas veces (en background)
-    if (translated !== originalText) {
-      const { supabase } = await import('@/lib/supabase')
-      const updateField = `${field}_${locale}` as keyof BlogPost
-      // Ejecutar en background sin esperar resultado
-      Promise.resolve(
-        supabase
-          .from('blog_posts')
-          .update({ [updateField]: translated })
-          .eq('id', post.id)
-      )
-        .then(() => {
-          console.log(`Traducción guardada para ${field}_${locale}`)
-        })
-        .catch((error) => {
-          console.error('Error guardando traducción:', error)
-        })
-    }
-    
-    return translated
-  } catch (error) {
-    console.error('Error traduciendo:', error)
-    // Si falla la traducción, retornar el texto original
-    return originalText
-  }
+  // Si no existe traducción guardada, usar el texto original
+  return post[field] || ''
 }
 
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string; locale: string }> }) {
@@ -226,12 +193,12 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     notFound()
   }
   
-  // Obtener campos traducidos (con traducción automática si es necesario)
-  const translatedTitle = await getTranslatedField(post, 'title', locale)
-  const translatedExcerpt = await getTranslatedField(post, 'excerpt', locale)
-  const translatedContent = await getTranslatedField(post, 'content', locale)
-  const translatedMetaTitle = (await getTranslatedField(post, 'meta_title', locale)) || translatedTitle
-  const translatedMetaDescription = (await getTranslatedField(post, 'meta_description', locale)) || translatedExcerpt
+      // Obtener campos traducidos (solo usa traducciones guardadas)
+      const translatedTitle = getTranslatedField(post, 'title', locale)
+      const translatedExcerpt = getTranslatedField(post, 'excerpt', locale)
+      const translatedContent = getTranslatedField(post, 'content', locale)
+      const translatedMetaTitle = getTranslatedField(post, 'meta_title', locale) || translatedTitle
+      const translatedMetaDescription = getTranslatedField(post, 'meta_description', locale) || translatedExcerpt
 
   const formatDate = (dateString: string | null) => {
     if (!dateString) return ''

@@ -30,8 +30,8 @@ interface BlogPost {
   excerpt_pt?: string | null
 }
 
-// Función helper para obtener el campo traducido (con traducción automática)
-async function getTranslatedField(post: BlogPost, field: 'title' | 'excerpt', locale: string): Promise<string> {
+// Función helper para obtener el campo traducido (solo usa traducciones guardadas)
+function getTranslatedField(post: BlogPost, field: 'title' | 'excerpt', locale: string): string {
   if (locale === 'es') {
     return post[field] || ''
   }
@@ -44,41 +44,8 @@ async function getTranslatedField(post: BlogPost, field: 'title' | 'excerpt', lo
     return translatedValue as string
   }
   
-  // Si no existe, traducir automáticamente usando la API
-  const originalText = post[field] || ''
-  if (!originalText || originalText.trim().length === 0) {
-    return ''
-  }
-  
-  try {
-    const response = await fetch('/api/translate', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        text: originalText,
-        targetLang: locale,
-        sourceLang: 'es',
-      }),
-    })
-    
-    if (!response.ok) {
-      return originalText
-    }
-    
-    const data = await response.json()
-    const translated = data.translated || originalText
-    
-    // Guardar traducción en la base de datos (opcional, en background)
-    if (translated !== originalText) {
-      // Esto se puede hacer con una llamada a una API route si es necesario
-      // Por ahora solo retornamos la traducción
-    }
-    
-    return translated
-  } catch (error) {
-    console.error('Error traduciendo:', error)
-    return originalText
-  }
+  // Si no existe traducción guardada, usar el texto original
+  return post[field] || ''
 }
 
 export default function Blog() {
@@ -87,31 +54,11 @@ export default function Blog() {
   const params = useParams()
   const currentLocale = (params?.locale as string) || locale
   const [posts, setPosts] = useState<BlogPost[]>([])
-  const [translatedPosts, setTranslatedPosts] = useState<Record<string, { title: string; excerpt: string }>>({})
   const [loading, setLoading] = useState(true)
   
   const getBlogUrl = (path: string) => {
     return currentLocale === 'es' ? path : `/${currentLocale}${path}`
   }
-  
-  // Traducir posts cuando cambie el locale
-  useEffect(() => {
-    if (currentLocale !== 'es' && posts.length > 0) {
-      const translatePosts = async () => {
-        const translations: Record<string, { title: string; excerpt: string }> = {}
-        
-        for (const post of posts) {
-          const title = await getTranslatedField(post, 'title', currentLocale)
-          const excerpt = await getTranslatedField(post, 'excerpt', currentLocale)
-          translations[post.id] = { title, excerpt }
-        }
-        
-        setTranslatedPosts(translations)
-      }
-      
-      translatePosts()
-    }
-  }, [currentLocale, posts])
 
   useEffect(() => {
     loadPosts()
@@ -204,16 +151,12 @@ export default function Blog() {
                   <Calendar size={14} />
                   {formatDate(post.published_at)}
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-primary-600 transition line-clamp-2">
-                  {currentLocale === 'es' 
-                    ? post.title 
-                    : (translatedPosts[post.id]?.title || post.title)}
-                </h3>
-                <p className="text-gray-600 mb-4 text-sm line-clamp-3">
-                  {currentLocale === 'es' 
-                    ? post.excerpt 
-                    : (translatedPosts[post.id]?.excerpt || post.excerpt)}
-                </p>
+                    <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-primary-600 transition line-clamp-2">
+                      {getTranslatedField(post, 'title', currentLocale)}
+                    </h3>
+                    <p className="text-gray-600 mb-4 text-sm line-clamp-3">
+                      {getTranslatedField(post, 'excerpt', currentLocale)}
+                    </p>
                 <div className="flex items-center text-primary-600 font-medium text-sm group-hover:gap-2 transition-all">
                   {t('readMore')}
                   <ArrowRight size={16} className="ml-1 group-hover:translate-x-1 transition-transform" />

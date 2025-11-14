@@ -44,15 +44,10 @@ interface BlogPost {
   excerpt_pt?: string | null
 }
 
-// Función helper para obtener el campo traducido (con traducción automática)
-async function getTranslatedField(post: BlogPost, field: 'title' | 'excerpt', locale: string): Promise<string> {
+// Función helper para obtener el campo traducido (solo usa traducciones guardadas)
+function getTranslatedField(post: BlogPost, field: 'title' | 'excerpt', locale: string): string {
   if (locale === 'es') {
     return post[field] || ''
-  }
-  
-  const originalText = post[field] || ''
-  if (!originalText || originalText.trim().length === 0) {
-    return ''
   }
   
   const translatedField = `${field}_${locale}` as keyof BlogPost
@@ -60,39 +55,11 @@ async function getTranslatedField(post: BlogPost, field: 'title' | 'excerpt', lo
   
   // Si existe traducción guardada, usarla
   if (translatedValue && (translatedValue as string).trim().length > 0) {
-    console.log(`[getTranslatedField] Usando traducción guardada para ${field}_${locale} del post ${post.id}`)
     return translatedValue as string
   }
   
-  // Si no existe, traducir automáticamente
-  console.log(`[getTranslatedField] Traduciendo ${field} del post ${post.id} de es a ${locale}`)
-  try {
-    const { translateText } = await import('@/lib/translations')
-    console.log(`[getTranslatedField] Llamando translateText para: "${originalText.substring(0, 50)}..."`)
-    const translated = await translateText(originalText, locale, 'es')
-    console.log(`[getTranslatedField] Traducción recibida: "${translated.substring(0, 50)}..."`)
-    
-    // Guardar traducción en background solo si es diferente
-    if (translated && translated !== originalText && translated.trim().length > 0) {
-      const { supabase } = await import('@/lib/supabase')
-      const updateField = `${field}_${locale}` as keyof BlogPost
-      supabase
-        .from('blog_posts')
-        .update({ [updateField]: translated })
-        .eq('id', post.id)
-        .then(() => {
-          console.log(`[getTranslatedField] Traducción guardada para ${updateField} del post ${post.id}`)
-        })
-        .catch((error) => {
-          console.error(`[getTranslatedField] Error guardando traducción para ${updateField}:`, error)
-        })
-    }
-    
-    return translated || originalText
-  } catch (error) {
-    console.error(`[getTranslatedField] Error traduciendo ${field} del post ${post.id}:`, error)
-    return originalText
-  }
+  // Si no existe traducción guardada, usar el texto original
+  return post[field] || ''
 }
 
 async function getBlogPosts() {
@@ -162,117 +129,35 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
     return locale === 'es' ? path : `/${locale}${path}`
   }
 
-  // Función para traducir posts de forma segura
-  const translatePosts = async (postsList: BlogPost[]) => {
+  // Función para obtener traducciones guardadas (sin traducción automática)
+  const translatePosts = (postsList: BlogPost[]) => {
     if (locale === 'es') {
-      console.log('[translatePosts] Locale es español, no traducir')
       return postsList
     }
     
-    if (postsList.length === 0) {
-      console.log('[translatePosts] No hay posts para traducir')
-      return postsList
-    }
-    
-    console.log(`[translatePosts] Traduciendo ${postsList.length} posts a ${locale}`)
-    const translated: BlogPost[] = []
-    
-    for (let i = 0; i < postsList.length; i++) {
-      const post = postsList[i]
-      console.log(`[translatePosts] Procesando post ${i + 1}/${postsList.length}: ${post.id}`)
+    return postsList.map(post => {
       const translatedPost = { ...post }
       
-      try {
-        // Intentar obtener traducción guardada primero
-        const titleField = `title_${locale}` as keyof BlogPost
-        const titleValue = post[titleField]
-        
-        if (titleValue && (titleValue as string).trim().length > 0) {
-          console.log(`[translatePosts] Post ${post.id}: Usando título traducido guardado`)
-          translatedPost.title = titleValue as string
-        } else {
-          console.log(`[translatePosts] Post ${post.id}: Traduciendo título...`)
-          // Traducir automáticamente - aumentar timeout a 5 segundos
-          const translationPromise = getTranslatedField(post, 'title', locale)
-          const timeoutPromise = new Promise<string>((resolve) => 
-            setTimeout(() => {
-              console.warn(`[translatePosts] Timeout traduciendo título del post ${post.id}, usando original`)
-              resolve(post.title)
-            }, 5000)
-          )
-          
-          translatedPost.title = await Promise.race([translationPromise, timeoutPromise]) || post.title
-          console.log(`[translatePosts] Post ${post.id}: Título traducido: "${translatedPost.title.substring(0, 50)}..."`)
-        }
-        
-        // Mismo proceso para excerpt
-        const excerptField = `excerpt_${locale}` as keyof BlogPost
-        const excerptValue = post[excerptField]
-        
-        if (excerptValue && (excerptValue as string).trim().length > 0) {
-          console.log(`[translatePosts] Post ${post.id}: Usando excerpt traducido guardado`)
-          translatedPost.excerpt = excerptValue as string
-        } else {
-          console.log(`[translatePosts] Post ${post.id}: Traduciendo excerpt...`)
-          const translationPromise = getTranslatedField(post, 'excerpt', locale)
-          const timeoutPromise = new Promise<string>((resolve) => 
-            setTimeout(() => {
-              console.warn(`[translatePosts] Timeout traduciendo excerpt del post ${post.id}, usando original`)
-              resolve(post.excerpt)
-            }, 5000)
-          )
-          
-          translatedPost.excerpt = await Promise.race([translationPromise, timeoutPromise]) || post.excerpt
-          console.log(`[translatePosts] Post ${post.id}: Excerpt traducido: "${translatedPost.excerpt.substring(0, 50)}..."`)
-        }
-      } catch (error) {
-        console.error(`[translatePosts] Error traduciendo post ${post.id}:`, error)
-        // Si falla, usar valores originales
-        translatedPost.title = post.title
-        translatedPost.excerpt = post.excerpt
+      // Usar traducciones guardadas si existen
+      const titleField = `title_${locale}` as keyof BlogPost
+      const titleValue = post[titleField]
+      if (titleValue && (titleValue as string).trim().length > 0) {
+        translatedPost.title = titleValue as string
       }
       
-      translated.push(translatedPost)
-      
-      // Delay entre posts para evitar rate limiting (solo si traducimos)
-      if (i < postsList.length - 1) {
-        const titleField = `title_${locale}` as keyof BlogPost
-        const titleValue = post[titleField]
-        if (!titleValue || (titleValue as string).trim().length === 0) {
-          console.log(`[translatePosts] Esperando 500ms antes del siguiente post...`)
-          await new Promise(resolve => setTimeout(resolve, 500))
-        }
+      const excerptField = `excerpt_${locale}` as keyof BlogPost
+      const excerptValue = post[excerptField]
+      if (excerptValue && (excerptValue as string).trim().length > 0) {
+        translatedPost.excerpt = excerptValue as string
       }
-    }
-    
-    console.log(`[translatePosts] Traducción completada: ${translated.length} posts`)
-    return translated
+      
+      return translatedPost
+    })
   }
 
-  // Traducir posts con manejo de errores mejorado
-  let translatedFeaturedPosts: BlogPost[] = featuredPosts
-  let translatedRegularPosts: BlogPost[] = regularPosts
-  
-  // Solo traducir si no es español
-  if (locale !== 'es') {
-    try {
-      console.log(`[BlogPage] Traduciendo ${featuredPosts.length} featured posts...`)
-      translatedFeaturedPosts = await translatePosts(featuredPosts)
-      console.log(`[BlogPage] Featured posts traducidos: ${translatedFeaturedPosts.length}`)
-    } catch (error) {
-      console.error('Error traduciendo featured posts:', error)
-      translatedFeaturedPosts = featuredPosts
-    }
-    
-    try {
-      console.log(`[BlogPage] Traduciendo ${regularPosts.length} regular posts...`)
-      translatedRegularPosts = await translatePosts(regularPosts)
-      console.log(`[BlogPage] Regular posts traducidos: ${translatedRegularPosts.length}`)
-    } catch (error) {
-      console.error('Error traduciendo regular posts:', error)
-      translatedRegularPosts = regularPosts
-    }
-  }
+  // Obtener traducciones guardadas (sin traducción automática)
+  const translatedFeaturedPosts = translatePosts(featuredPosts)
+  const translatedRegularPosts = translatePosts(regularPosts)
 
   const formatDate = (dateString: string | null) => {
     if (!dateString) return ''
