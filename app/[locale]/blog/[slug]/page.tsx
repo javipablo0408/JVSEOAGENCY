@@ -190,10 +190,13 @@ async function getTranslatedField(
     if (translated !== originalText) {
       const { supabase } = await import('@/lib/supabase')
       const updateField = `${field}_${locale}` as keyof BlogPost
-      supabase
-        .from('blog_posts')
-        .update({ [updateField]: translated })
-        .eq('id', post.id)
+      // Ejecutar en background sin esperar resultado
+      Promise.resolve(
+        supabase
+          .from('blog_posts')
+          .update({ [updateField]: translated })
+          .eq('id', post.id)
+      )
         .then(() => {
           console.log(`Traducción guardada para ${field}_${locale}`)
         })
