@@ -1,13 +1,13 @@
-import { supabase } from '@/lib/supabase'
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Calendar, Clock, ArrowLeft, Share2 } from 'lucide-react'
+import { Calendar, ArrowLeft, Share2 } from 'lucide-react'
 import type { Metadata } from 'next'
 import { getTranslations, getLocale } from 'next-intl/server'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import Contact from '@/components/Contact'
+<<<<<<< HEAD:app/[locale]/blog/[slug]/page.tsx
 
 interface BlogPost {
   id: string
@@ -123,6 +123,19 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string; locale: string }> }): Promise<Metadata> {
   const { slug, locale } = await params
   const post = await getBlogPost(slug)
+=======
+import { getPostBySlug, getAllPosts } from '@/lib/blog-posts'
+
+export async function generateStaticParams() {
+  const posts = getAllPosts()
+  return posts.map((post) => ({
+    slug: post.slug,
+  }))
+}
+
+export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
+  const post = getPostBySlug(params.slug)
+>>>>>>> ff2897298794552c7d14a6d920eab91340cb573a:app/blog/[slug]/page.tsx
 
   if (!post) {
     return {
@@ -144,7 +157,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       description: translatedMetaDescription,
       images: post.featured_image_url ? [{ url: post.featured_image_url }] : undefined,
       type: 'article',
-      publishedTime: post.published_at || undefined,
+      publishedTime: post.published_at,
       authors: [post.author_name],
     },
     twitter: {
@@ -156,6 +169,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   }
 }
 
+<<<<<<< HEAD:app/[locale]/blog/[slug]/page.tsx
 // Función helper para obtener el campo traducido
 async function getTranslatedField(
   post: BlogPost, 
@@ -218,6 +232,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   const getBlogUrl = (path: string) => {
     return locale === 'es' ? path : `/${locale}${path}`
   }
+=======
+export default function BlogPostPage({ params }: { params: { slug: string } }) {
+  const post = getPostBySlug(params.slug)
+>>>>>>> ff2897298794552c7d14a6d920eab91340cb573a:app/blog/[slug]/page.tsx
 
   if (!post) {
     notFound()
@@ -230,10 +248,15 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   const translatedMetaTitle = (await getTranslatedField(post, 'meta_title', locale)) || translatedTitle
   const translatedMetaDescription = (await getTranslatedField(post, 'meta_description', locale)) || translatedExcerpt
 
+<<<<<<< HEAD:app/[locale]/blog/[slug]/page.tsx
   const formatDate = (dateString: string | null) => {
     if (!dateString) return ''
     const dateFormat = t('dateFormat') || 'es-ES'
     return new Date(dateString).toLocaleDateString(dateFormat, {
+=======
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('es-ES', {
+>>>>>>> ff2897298794552c7d14a6d920eab91340cb573a:app/blog/[slug]/page.tsx
       year: 'numeric',
       month: 'long',
       day: 'numeric',
@@ -268,11 +291,15 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 mb-6">
             <div className="flex items-center gap-2">
               <Calendar size={16} />
+<<<<<<< HEAD:app/[locale]/blog/[slug]/page.tsx
               {formatDate(post.published_at || post.created_at)}
             </div>
             <div className="flex items-center gap-2">
               <Clock size={16} />
               {post.views} {t('views')}
+=======
+              {formatDate(post.published_at)}
+>>>>>>> ff2897298794552c7d14a6d920eab91340cb573a:app/blog/[slug]/page.tsx
             </div>
             <div className="flex items-center gap-2">
               {t('by')} {post.author_name}
@@ -328,7 +355,11 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
               <p className="text-sm text-gray-600">
+<<<<<<< HEAD:app/[locale]/blog/[slug]/page.tsx
                 {t('publishedOn')} {formatDate(post.published_at || post.created_at)}
+=======
+                Publicado el {formatDate(post.published_at)}
+>>>>>>> ff2897298794552c7d14a6d920eab91340cb573a:app/blog/[slug]/page.tsx
               </p>
               {post.keywords.length > 0 && (
                 <div className="flex flex-wrap gap-2 mt-4">

@@ -26,10 +26,21 @@ export default function About() {
         <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
           <div>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4 sm:mb-6">
+<<<<<<< HEAD
               {t('title')}
             </h2>
             <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-6 sm:mb-8 leading-relaxed">
               {t('description')}
+=======
+              ¿Por qué elegirnos como diseñador de páginas web en Madrid?
+            </h2>
+            <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-6 sm:mb-8 leading-relaxed">
+              En JVSEOAGENCY, somos especialistas en <strong>diseño de páginas web en Madrid</strong>. Como <strong>diseñador de páginas web en Madrid</strong>, 
+              combinamos experiencia técnica con creatividad para ofrecer soluciones que realmente funcionan. Nos especializamos 
+              en crear <strong>páginas web en Madrid</strong> que impulsan el crecimiento de tu negocio. 
+              Trabajamos con empresas de Madrid y toda España, ofreciendo servicios de <strong>diseño de páginas web en Madrid</strong> 
+              y desarrollo web profesional adaptados a las necesidades del mercado español.
+>>>>>>> ff2897298794552c7d14a6d920eab91340cb573a
             </p>
             <ul className="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
               {features.map((feature, index) => (

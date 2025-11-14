@@ -1,10 +1,9 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { createClient } from '@/lib/supabase-client'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Calendar, ArrowRight } from 'lucide-react'
+<<<<<<< HEAD
 import { useTranslations, useLocale } from 'next-intl'
 import { useParams } from 'next/navigation'
 
@@ -153,15 +152,26 @@ export default function Blog() {
       </section>
     )
   }
+=======
+import { getAllPosts, type BlogPost } from '@/lib/blog-posts'
+
+export default function Blog() {
+  const posts = getAllPosts().slice(0, 3) // Mostrar solo los 3 más recientes
+>>>>>>> ff2897298794552c7d14a6d920eab91340cb573a
 
   if (posts.length === 0) {
     return null
   }
 
+<<<<<<< HEAD
   const formatDate = (dateString: string | null) => {
     if (!dateString) return ''
     const dateFormat = t('dateFormat') || 'es-ES'
     return new Date(dateString).toLocaleDateString(dateFormat, {
+=======
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('es-ES', {
+>>>>>>> ff2897298794552c7d14a6d920eab91340cb573a
       year: 'numeric',
       month: 'long',
       day: 'numeric',
@@ -183,8 +193,13 @@ export default function Blog() {
         <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {posts.map((post) => (
             <Link
+<<<<<<< HEAD
               key={post.id}
               href={getBlogUrl(`/blog/${post.slug}`)}
+=======
+              key={post.slug}
+              href={`/blog/${post.slug}`}
+>>>>>>> ff2897298794552c7d14a6d920eab91340cb573a
               className="group bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2"
             >
               {post.featured_image_url && (
@@ -202,7 +217,7 @@ export default function Blog() {
               <div className="p-6">
                 <div className="flex items-center gap-2 text-xs text-gray-500 mb-3">
                   <Calendar size={14} />
-                  {formatDate(post.published_at || post.created_at)}
+                  {formatDate(post.published_at)}
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-primary-600 transition line-clamp-2">
                   {currentLocale === 'es' 
