@@ -1,47 +1,14 @@
+const createNextIntlPlugin = require('next-intl/plugin')
+
+const withNextIntl = createNextIntlPlugin('./i18n.ts')
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   compress: true,
   poweredByHeader: false,
   images: {
-    formats: ['image/avif', 'image/webp'],
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    minimumCacheTTL: 60,
-    domains: [
-      ...(process.env.NEXT_PUBLIC_SUPABASE_URL 
-        ? [new URL(process.env.NEXT_PUBLIC_SUPABASE_URL).hostname]
-        : []),
-      'cdn.jsdelivr.net',
-      'supabase.com',
-      'avatars.githubusercontent.com',
-      'raw.githubusercontent.com',
-    ],
-    remotePatterns: [
-      ...(process.env.NEXT_PUBLIC_SUPABASE_URL
-        ? [{
-            protocol: 'https',
-            hostname: new URL(process.env.NEXT_PUBLIC_SUPABASE_URL).hostname,
-            pathname: '/storage/v1/object/public/**',
-          }]
-        : []),
-      {
-        protocol: 'https',
-        hostname: 'cdn.jsdelivr.net',
-      },
-      {
-        protocol: 'https',
-        hostname: 'supabase.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'avatars.githubusercontent.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'raw.githubusercontent.com',
-      },
-    ],
+    unoptimized: true,
   },
   headers: async () => {
     return [
@@ -100,5 +67,5 @@ const nextConfig = {
   // },
 }
 
-module.exports = nextConfig
+module.exports = withNextIntl(nextConfig)
 

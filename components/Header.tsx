@@ -4,12 +4,15 @@ import { useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import { Menu, X } from 'lucide-react'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
+import LanguageSelector from './LanguageSelector'
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const pathname = usePathname()
   const router = useRouter()
-  const isHomePage = pathname === '/'
+  const isHomePage = pathname === '/' || pathname.match(/^\/(es|en|fr|de|it|pt)?\/?$/)
+  const t = useTranslations('nav')
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
     // Si es un enlace externo o a otra página, no prevenir el comportamiento por defecto
@@ -101,23 +104,27 @@ export default function Header() {
           </Link>
           
           {/* Desktop Menu */}
-          <div className="hidden md:flex items-center space-x-8">
-            <NavLink href="#inicio">Inicio</NavLink>
-            <NavLink href="#servicios">Servicios</NavLink>
-            <NavLink href="#proyectos">Proyectos</NavLink>
-            <NavLink href="/blog">Blog</NavLink>
-            <NavLink href="#nosotros">Nosotros</NavLink>
-            <NavLink href="#contacto" isButton>Contacto</NavLink>
+          <div className="hidden md:flex items-center space-x-6">
+            <NavLink href="#inicio">{t('home')}</NavLink>
+            <NavLink href="#servicios">{t('services')}</NavLink>
+            <NavLink href="#proyectos">{t('projects')}</NavLink>
+            <NavLink href="/blog">{t('blog')}</NavLink>
+            <NavLink href="#nosotros">{t('about')}</NavLink>
+            <NavLink href="#contacto" isButton>{t('contact')}</NavLink>
+            <LanguageSelector />
           </div>
 
           {/* Mobile Menu Button */}
-          <button
-            className="md:hidden text-gray-700 hover:text-primary-600 active:scale-95 transition-all duration-200 ease-out p-2"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            aria-label="Toggle menu"
-          >
-            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          <div className="md:hidden flex items-center gap-2">
+            <LanguageSelector />
+            <button
+              className="text-gray-700 hover:text-primary-600 active:scale-95 transition-all duration-200 ease-out p-2"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-label="Toggle menu"
+            >
+              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Menu */}
@@ -129,12 +136,12 @@ export default function Header() {
           }`}
         >
           <div className={`space-y-2 ${isMenuOpen ? 'animate-in' : ''}`}>
-            <MobileNavLink href="#inicio">Inicio</MobileNavLink>
-            <MobileNavLink href="#servicios">Servicios</MobileNavLink>
-            <MobileNavLink href="#proyectos">Proyectos</MobileNavLink>
-            <MobileNavLink href="/blog">Blog</MobileNavLink>
-            <MobileNavLink href="#nosotros">Nosotros</MobileNavLink>
-            <MobileNavLink href="#contacto" isButton>Contacto</MobileNavLink>
+            <MobileNavLink href="#inicio">{t('home')}</MobileNavLink>
+            <MobileNavLink href="#servicios">{t('services')}</MobileNavLink>
+            <MobileNavLink href="#proyectos">{t('projects')}</MobileNavLink>
+            <MobileNavLink href="/blog">{t('blog')}</MobileNavLink>
+            <MobileNavLink href="#nosotros">{t('about')}</MobileNavLink>
+            <MobileNavLink href="#contacto" isButton>{t('contact')}</MobileNavLink>
           </div>
         </div>
       </nav>

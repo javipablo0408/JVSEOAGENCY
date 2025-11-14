@@ -1,8 +1,11 @@
 'use client'
 
 import { ArrowRight, Sparkles } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 
 export default function Hero() {
+  const t = useTranslations('hero')
+  
   return (
     <section id="inicio" className="pt-32 pb-20 px-4 bg-gradient-to-br from-primary-50 via-white to-primary-50">
       <div className="container mx-auto max-w-6xl">
@@ -10,31 +13,28 @@ export default function Hero() {
           <div>
             <div className="inline-flex items-center gap-2 bg-primary-100 text-primary-700 px-4 py-2 rounded-full mb-6">
               <Sparkles size={16} />
-              <span className="text-sm font-medium">Agencia Digital en Madrid</span>
+              <span className="text-sm font-medium">{t('badge')}</span>
             </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-              Desarrollo Web en Madrid, Apps y{' '}
-              <span className="text-primary-600">Automatizaciones IA</span>
+              {t('title')}{' '}
+              <span className="text-primary-600">{t('titleHighlight')}</span>
             </h1>
             <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-8 leading-relaxed">
-              Agencia de desarrollo web y aplicaciones móviles en Madrid. 
-              Transformamos tus ideas en soluciones digitales innovadoras para empresas en España. 
-              Especialistas en desarrollo web profesional, aplicaciones móviles y automatizaciones 
-              inteligentes con Inteligencia Artificial.
+              {t('description')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <a
                 href="#contacto"
                 className="inline-flex items-center justify-center bg-primary-600 text-white px-8 py-4 rounded-lg hover:bg-primary-700 transition font-medium group"
               >
-                Comenzar Proyecto
+                {t('ctaPrimary')}
                 <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
               </a>
               <a
                 href="#servicios"
                 className="inline-flex items-center justify-center border-2 border-primary-600 text-primary-600 px-8 py-4 rounded-lg hover:bg-primary-50 transition font-medium"
               >
-                Ver Servicios
+                {t('ctaSecondary')}
               </a>
             </div>
           </div>

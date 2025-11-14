@@ -86,6 +86,11 @@ export const metadata: Metadata = {
     canonical: 'https://jvseoagency.com',
     languages: {
       'es-ES': 'https://jvseoagency.com',
+      'en': 'https://jvseoagency.com/en',
+      'fr': 'https://jvseoagency.com/fr',
+      'de': 'https://jvseoagency.com/de',
+      'it': 'https://jvseoagency.com/it',
+      'pt': 'https://jvseoagency.com/pt',
     },
   },
   category: 'Tecnología',
@@ -103,7 +108,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="es-ES">
+    <html>
       <body className={inter.className}>
         <StructuredData />
         <AuthProvider>{children}</AuthProvider>

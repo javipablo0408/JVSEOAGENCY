@@ -10,11 +10,13 @@
   },
   "dependencies": {
     "@supabase/ssr": "^0.7.0",
-    "@supabase/supabase-js": "^2.39.0",
+    "@supabase/supabase-js": "^2.81.1",
     "@vercel/analytics": "^1.5.0",
     "@vercel/speed-insights": "^1.2.0",
+    "@vitalets/google-translate-api": "^9.2.1",
     "lucide-react": "^0.303.0",
     "next": "^14.0.4",
+    "next-intl": "^4.5.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

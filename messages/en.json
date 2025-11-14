@@ -1,0 +1,114 @@
+{
+  "nav": {
+    "home": "Home",
+    "services": "Services",
+    "projects": "Projects",
+    "blog": "Blog",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "hero": {
+    "badge": "Digital Agency in Madrid",
+    "title": "Web Development in Madrid, Apps and",
+    "titleHighlight": "AI Automations",
+    "description": "Web development and mobile applications agency in Madrid. We transform your ideas into innovative digital solutions for companies in Spain. Specialists in professional web development, mobile applications and intelligent automations with Artificial Intelligence.",
+    "ctaPrimary": "Start Project",
+    "ctaSecondary": "View Services"
+  },
+  "services": {
+    "title": "Web Development Services in Madrid",
+    "subtitle": "Complete technological solutions for companies in Madrid and throughout Spain. Professional web development, mobile applications and AI automations.",
+    "web": {
+      "title": "Web Development in Madrid",
+      "description": "Modern, fast and SEO-optimized websites. Professional web development in Madrid for Spanish companies. From landing pages to complex web applications."
+    },
+    "mobile": {
+      "title": "Mobile Apps in Madrid",
+      "description": "Mobile application development for iOS and Android in Madrid. Native and hybrid apps with intuitive design and exceptional user experience for Spanish companies."
+    },
+    "ai": {
+      "title": "AI Automations",
+      "description": "Artificial intelligence integration to automate processes, intelligent chatbots and predictive analytics."
+    },
+    "custom": {
+      "title": "Custom Development",
+      "description": "Customized solutions adapted to your specific needs. Scalable and maintainable architecture."
+    },
+    "backend": {
+      "title": "Backend & APIs",
+      "description": "Robust API development, optimized databases and scalable server architecture."
+    },
+    "optimization": {
+      "title": "Optimization",
+      "description": "Performance, speed and conversion improvement. Continuous analysis and optimization of your projects."
+    }
+  },
+  "about": {
+    "title": "Why Choose Us in Madrid?",
+    "description": "At JVSEOAGENCY, a web development agency in Madrid, we combine technical expertise with creativity to offer solutions that really work. We specialize in creating digital products that drive your business growth in Spain. We work with companies in Madrid and throughout Spain, offering professional web development services adapted to the needs of the Spanish market.",
+    "features": {
+      "agile": "Agile development and modern methodologies",
+      "team": "Multidisciplinary team of experts",
+      "tech": "Cutting-edge technologies",
+      "support": "Continuous support and maintenance",
+      "results": "Measurable results and guaranteed ROI"
+    },
+    "stats": {
+      "clients": "Satisfied Clients",
+      "projects": "Completed Projects",
+      "experience": "Years of Experience"
+    }
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "Do you have a project in mind? Let's talk and make it happen",
+    "info": "Contact Information",
+    "email": "Email",
+    "phone": "Phone",
+    "location": "Location",
+    "locationDetail": "Services throughout Spain",
+    "form": {
+      "name": "Full Name",
+      "namePlaceholder": "Your name",
+      "email": "Email",
+      "emailPlaceholder": "your@email.com",
+      "phone": "Phone",
+      "phonePlaceholder": "+34 618 967 972",
+      "message": "Message",
+      "messagePlaceholder": "Tell us about your project...",
+      "submit": "Send Message",
+      "submitting": "Sending...",
+      "success": "Message sent successfully! We will contact you soon.",
+      "error": "There was an error sending. Please try again."
+    }
+  },
+  "footer": {
+    "description": "Web development and mobile applications agency in Madrid. Specialists in Next.js, React, WordPress and AI automations.",
+    "quickLinks": "Quick Links",
+    "services": "Services",
+    "about": "About Us",
+    "contact": "Contact",
+    "blog": "Blog",
+    "legal": "Legal",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "rights": "All rights reserved"
+  },
+  "blog": {
+    "title": "Web Development Blog",
+    "subtitle": "Articles about web development, mobile applications and AI automations in Madrid",
+    "subtitlePage": "Articles about web development, mobile applications, AI automations and technology in Madrid",
+    "featured": "Featured Articles",
+    "allArticles": "All Articles",
+    "readMore": "Read more",
+    "viewAll": "View all articles",
+    "noPosts": "No published articles yet.",
+    "backToBlog": "Back to blog",
+    "views": "views",
+    "by": "By",
+    "share": "Share:",
+    "publishedOn": "Published on",
+    "dateFormat": "en-US"
+  }
+}
+

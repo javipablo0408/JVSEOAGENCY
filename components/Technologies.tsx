@@ -49,8 +49,8 @@ export default function Technologies() {
     },
     {
       name: 'Tailwind CSS',
-      logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-plain.svg',
-      fallback: 'https://tailwindcss.com/favicons/favicon-32x32.png',
+      logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg',
+      fallback: 'https://www.svgrepo.com/show/354431/tailwindcss-icon.svg',
       url: 'https://tailwindcss.com',
     },
   ]

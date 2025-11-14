@@ -1,0 +1,114 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "services": "Services",
+    "projects": "Projets",
+    "blog": "Blog",
+    "about": "À propos",
+    "contact": "Contact"
+  },
+  "hero": {
+    "badge": "Agence Digitale à Madrid",
+    "title": "Développement Web à Madrid, Apps et",
+    "titleHighlight": "Automatisations IA",
+    "description": "Agence de développement web et d'applications mobiles à Madrid. Nous transformons vos idées en solutions numériques innovantes pour les entreprises en Espagne. Spécialistes en développement web professionnel, applications mobiles et automatisations intelligentes avec Intelligence Artificielle.",
+    "ctaPrimary": "Démarrer un Projet",
+    "ctaSecondary": "Voir les Services"
+  },
+  "services": {
+    "title": "Services de Développement Web à Madrid",
+    "subtitle": "Solutions technologiques complètes pour les entreprises à Madrid et dans toute l'Espagne. Développement web professionnel, applications mobiles et automatisations IA.",
+    "web": {
+      "title": "Développement Web à Madrid",
+      "description": "Sites web modernes, rapides et optimisés pour le SEO. Développement web professionnel à Madrid pour les entreprises espagnoles. Des landing pages aux applications web complexes."
+    },
+    "mobile": {
+      "title": "Apps Mobiles à Madrid",
+      "description": "Développement d'applications mobiles pour iOS et Android à Madrid. Apps natives et hybrides avec un design intuitif et une expérience utilisateur exceptionnelle pour les entreprises espagnoles."
+    },
+    "ai": {
+      "title": "Automatisations IA",
+      "description": "Intégration de l'intelligence artificielle pour automatiser les processus, chatbots intelligents et analyses prédictives."
+    },
+    "custom": {
+      "title": "Développement sur Mesure",
+      "description": "Solutions personnalisées adaptées à vos besoins spécifiques. Architecture scalable et maintenable."
+    },
+    "backend": {
+      "title": "Backend & APIs",
+      "description": "Développement d'APIs robustes, bases de données optimisées et architecture de serveurs scalables."
+    },
+    "optimization": {
+      "title": "Optimisation",
+      "description": "Amélioration des performances, de la vitesse et de la conversion. Analyse et optimisation continues de vos projets."
+    }
+  },
+  "about": {
+    "title": "Pourquoi nous choisir à Madrid ?",
+    "description": "Chez JVSEOAGENCY, agence de développement web à Madrid, nous combinons expertise technique et créativité pour offrir des solutions qui fonctionnent vraiment. Nous nous spécialisons dans la création de produits numériques qui stimulent la croissance de votre entreprise en Espagne. Nous travaillons avec des entreprises à Madrid et dans toute l'Espagne, offrant des services de développement web professionnel adaptés aux besoins du marché espagnol.",
+    "features": {
+      "agile": "Développement agile et méthodologies modernes",
+      "team": "Équipe multidisciplinaire d'experts",
+      "tech": "Technologies de pointe",
+      "support": "Support continu et maintenance",
+      "results": "Résultats mesurables et ROI garanti"
+    },
+    "stats": {
+      "clients": "Clients Satisfaits",
+      "projects": "Projets Terminés",
+      "experience": "Années d'Expérience"
+    }
+  },
+  "contact": {
+    "title": "Contactez-nous",
+    "subtitle": "Vous avez un projet en tête ? Parlons-en et concrétisons-le",
+    "info": "Informations de Contact",
+    "email": "Email",
+    "phone": "Téléphone",
+    "location": "Localisation",
+    "locationDetail": "Services dans toute l'Espagne",
+    "form": {
+      "name": "Nom Complet",
+      "namePlaceholder": "Votre nom",
+      "email": "Email",
+      "emailPlaceholder": "votre@email.com",
+      "phone": "Téléphone",
+      "phonePlaceholder": "+34 618 967 972",
+      "message": "Message",
+      "messagePlaceholder": "Parlez-nous de votre projet...",
+      "submit": "Envoyer le Message",
+      "submitting": "Envoi en cours...",
+      "success": "Message envoyé avec succès ! Nous vous contacterons bientôt.",
+      "error": "Une erreur s'est produite lors de l'envoi. Veuillez réessayer."
+    }
+  },
+  "footer": {
+    "description": "Agence de développement web et d'applications mobiles à Madrid. Spécialistes en Next.js, React, WordPress et automatisations IA.",
+    "quickLinks": "Liens Rapides",
+    "services": "Services",
+    "about": "À Propos",
+    "contact": "Contact",
+    "blog": "Blog",
+    "legal": "Légal",
+    "privacy": "Confidentialité",
+    "terms": "Conditions",
+    "rights": "Tous droits réservés"
+  },
+  "blog": {
+    "title": "Blog de Développement Web",
+    "subtitle": "Articles sur le développement web, les applications mobiles et les automatisations IA à Madrid",
+    "subtitlePage": "Articles sur le développement web, les applications mobiles, les automatisations IA et la technologie à Madrid",
+    "featured": "Articles en Vedette",
+    "allArticles": "Tous les Articles",
+    "readMore": "Lire la suite",
+    "viewAll": "Voir tous les articles",
+    "noPosts": "Aucun article publié pour le moment.",
+    "backToBlog": "Retour au blog",
+    "views": "vues",
+    "by": "Par",
+    "share": "Partager :",
+    "publishedOn": "Publié le",
+    "dateFormat": "fr-FR"
+  }
+}
+

@@ -1,63 +1,65 @@
 'use client'
 
 import { Code, Globe, Zap, Smartphone, Database, Bot } from 'lucide-react'
-
-const services = [
-  {
-    icon: Globe,
-    title: 'Desarrollo Web en Madrid',
-    description: 'Sitios web modernos, rápidos y optimizados para SEO. Desarrollo web profesional en Madrid para empresas españolas. Desde landing pages hasta aplicaciones web complejas.',
-    color: 'text-blue-600',
-    bgColor: 'bg-blue-50',
-  },
-  {
-    icon: Smartphone,
-    title: 'Apps Móviles en Madrid',
-    description: 'Desarrollo de aplicaciones móviles para iOS y Android en Madrid. Apps nativas e híbridas con diseño intuitivo y experiencia de usuario excepcional para empresas españolas.',
-    color: 'text-purple-600',
-    bgColor: 'bg-purple-50',
-  },
-  {
-    icon: Bot,
-    title: 'Automatizaciones IA',
-    description: 'Integración de inteligencia artificial para automatizar procesos, chatbots inteligentes y análisis predictivo.',
-    color: 'text-green-600',
-    bgColor: 'bg-green-50',
-  },
-  {
-    icon: Code,
-    title: 'Desarrollo a Medida',
-    description: 'Soluciones personalizadas adaptadas a tus necesidades específicas. Arquitectura escalable y mantenible.',
-    color: 'text-orange-600',
-    bgColor: 'bg-orange-50',
-  },
-  {
-    icon: Database,
-    title: 'Backend & APIs',
-    description: 'Desarrollo de APIs robustas, bases de datos optimizadas y arquitectura de servidores escalables.',
-    color: 'text-red-600',
-    bgColor: 'bg-red-50',
-  },
-  {
-    icon: Zap,
-    title: 'Optimización',
-    description: 'Mejora de rendimiento, velocidad y conversión. Análisis y optimización continua de tus proyectos.',
-    color: 'text-yellow-600',
-    bgColor: 'bg-yellow-50',
-  },
-]
+import { useTranslations } from 'next-intl'
 
 export default function Services() {
+  const t = useTranslations('services')
+  
+  const services = [
+    {
+      icon: Globe,
+      title: t('web.title'),
+      description: t('web.description'),
+      color: 'text-blue-600',
+      bgColor: 'bg-blue-50',
+    },
+    {
+      icon: Smartphone,
+      title: t('mobile.title'),
+      description: t('mobile.description'),
+      color: 'text-purple-600',
+      bgColor: 'bg-purple-50',
+    },
+    {
+      icon: Bot,
+      title: t('ai.title'),
+      description: t('ai.description'),
+      color: 'text-green-600',
+      bgColor: 'bg-green-50',
+    },
+    {
+      icon: Code,
+      title: t('custom.title'),
+      description: t('custom.description'),
+      color: 'text-orange-600',
+      bgColor: 'bg-orange-50',
+    },
+    {
+      icon: Database,
+      title: t('backend.title'),
+      description: t('backend.description'),
+      color: 'text-red-600',
+      bgColor: 'bg-red-50',
+    },
+    {
+      icon: Zap,
+      title: t('optimization.title'),
+      description: t('optimization.description'),
+      color: 'text-yellow-600',
+      bgColor: 'bg-yellow-50',
+    },
+  ]
+
   return (
     <section id="servicios" className="py-20 px-4 bg-white">
       <div className="container mx-auto max-w-6xl">
         <div className="text-center mb-12 sm:mb-16">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Servicios de Desarrollo Web en Madrid
+            {t('title')}
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl mx-auto px-4">
-            Soluciones tecnológicas completas para empresas en Madrid y toda España. 
-            Desarrollo web profesional, aplicaciones móviles y automatizaciones con IA.
+            {t('subtitle')}
           </p>
         </div>
 
