@@ -16,21 +16,11 @@ export default function Hero() {
               <span className="text-sm font-medium">{t('badge')}</span>
             </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-<<<<<<< HEAD
               {t('title')}{' '}
               <span className="text-primary-600">{t('titleHighlight')}</span>
             </h1>
             <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-8 leading-relaxed">
               {t('description')}
-=======
-              Diseño de Páginas Web en Madrid,{' '}
-              <span className="text-primary-600">Desarrollo Web y Apps</span>
-            </h1>
-            <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-8 leading-relaxed">
-              Diseñador profesional de páginas web en Madrid. Creamos sitios web modernos, rápidos y optimizados para SEO. 
-              Especialistas en diseño de páginas web en Madrid, desarrollo web profesional, aplicaciones móviles y automatizaciones 
-              inteligentes con Inteligencia Artificial. Tu diseñador de páginas web en Madrid de confianza.
->>>>>>> ff2897298794552c7d14a6d920eab91340cb573a
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <a

@@ -1,65 +1,7 @@
 'use client'
 
-<<<<<<< HEAD
 import { Code, Globe, Zap, Smartphone, Database, Bot } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-=======
-import { Code, Globe, Zap, Smartphone, Database, Bot, Palette } from 'lucide-react'
-import Link from 'next/link'
-
-const services = [
-  {
-    icon: Palette,
-    title: 'Diseño de Páginas Web en Madrid',
-    description: 'Diseñador profesional de páginas web en Madrid. Creamos sitios web modernos, rápidos y optimizados para SEO. Diseño de páginas web en Madrid para empresas que buscan destacar online.',
-    color: 'text-blue-600',
-    bgColor: 'bg-blue-50',
-    link: '/diseno-paginas-web-madrid',
-  },
-  {
-    icon: Globe,
-    title: 'Desarrollo Web en Madrid',
-    description: 'Sitios web modernos, rápidos y optimizados para SEO. Desarrollo web profesional en Madrid para empresas españolas. Desde landing pages hasta aplicaciones web complejas.',
-    color: 'text-blue-600',
-    bgColor: 'bg-blue-50',
-  },
-  {
-    icon: Smartphone,
-    title: 'Apps Móviles en Madrid',
-    description: 'Desarrollo de aplicaciones móviles para iOS y Android en Madrid. Apps nativas e híbridas con diseño intuitivo y experiencia de usuario excepcional para empresas españolas.',
-    color: 'text-purple-600',
-    bgColor: 'bg-purple-50',
-  },
-  {
-    icon: Bot,
-    title: 'Automatizaciones IA',
-    description: 'Integración de inteligencia artificial para automatizar procesos, chatbots inteligentes y análisis predictivo.',
-    color: 'text-green-600',
-    bgColor: 'bg-green-50',
-  },
-  {
-    icon: Code,
-    title: 'Desarrollo a Medida',
-    description: 'Soluciones personalizadas adaptadas a tus necesidades específicas. Arquitectura escalable y mantenible.',
-    color: 'text-orange-600',
-    bgColor: 'bg-orange-50',
-  },
-  {
-    icon: Database,
-    title: 'Backend & APIs',
-    description: 'Desarrollo de APIs robustas, bases de datos optimizadas y arquitectura de servidores escalables.',
-    color: 'text-red-600',
-    bgColor: 'bg-red-50',
-  },
-  {
-    icon: Zap,
-    title: 'Optimización',
-    description: 'Mejora de rendimiento, velocidad y conversión. Análisis y optimización continua de tus proyectos.',
-    color: 'text-yellow-600',
-    bgColor: 'bg-yellow-50',
-  },
-]
->>>>>>> ff2897298794552c7d14a6d920eab91340cb573a
 
 export default function Services() {
   const t = useTranslations('services')
@@ -117,12 +59,7 @@ export default function Services() {
             {t('title')}
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl mx-auto px-4">
-<<<<<<< HEAD
             {t('subtitle')}
-=======
-            Soluciones tecnológicas completas para empresas en Madrid y toda España. 
-            Diseño de páginas web en Madrid, desarrollo web profesional, aplicaciones móviles y automatizaciones con IA.
->>>>>>> ff2897298794552c7d14a6d920eab91340cb573a
           </p>
         </div>
 
