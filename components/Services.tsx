@@ -1,8 +1,17 @@
 'use client'
 
-import { Code, Globe, Zap, Smartphone, Database, Bot } from 'lucide-react'
+import { Code, Globe, Zap, Smartphone, Database, Bot, Palette } from 'lucide-react'
+import Link from 'next/link'
 
 const services = [
+  {
+    icon: Palette,
+    title: 'Diseño de Páginas Web en Madrid',
+    description: 'Diseñador profesional de páginas web en Madrid. Creamos sitios web modernos, rápidos y optimizados para SEO. Diseño de páginas web en Madrid para empresas que buscan destacar online.',
+    color: 'text-blue-600',
+    bgColor: 'bg-blue-50',
+    link: '/diseno-paginas-web-madrid',
+  },
   {
     icon: Globe,
     title: 'Desarrollo Web en Madrid',
@@ -57,18 +66,15 @@ export default function Services() {
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl mx-auto px-4">
             Soluciones tecnológicas completas para empresas en Madrid y toda España. 
-            Desarrollo web profesional, aplicaciones móviles y automatizaciones con IA.
+            Diseño de páginas web en Madrid, desarrollo web profesional, aplicaciones móviles y automatizaciones con IA.
           </p>
         </div>
 
         <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           {services.map((service, index) => {
             const Icon = service.icon
-            return (
-              <div
-                key={index}
-                className="p-6 sm:p-8 rounded-xl border border-gray-200 hover:shadow-xl transition-all duration-300 hover:-translate-y-2 bg-white"
-              >
+            const content = (
+              <>
                 <div className={`${service.bgColor} w-14 h-14 sm:w-16 sm:h-16 rounded-lg flex items-center justify-center mb-4 sm:mb-6`}>
                   <Icon className={service.color} size={28} />
                 </div>
@@ -78,6 +84,27 @@ export default function Services() {
                 <p className="text-gray-600 leading-relaxed">
                   {service.description}
                 </p>
+              </>
+            )
+            
+            if (service.link) {
+              return (
+                <Link
+                  key={index}
+                  href={service.link}
+                  className="p-6 sm:p-8 rounded-xl border border-gray-200 hover:shadow-xl transition-all duration-300 hover:-translate-y-2 bg-white block"
+                >
+                  {content}
+                </Link>
+              )
+            }
+            
+            return (
+              <div
+                key={index}
+                className="p-6 sm:p-8 rounded-xl border border-gray-200 hover:shadow-xl transition-all duration-300 hover:-translate-y-2 bg-white"
+              >
+                {content}
               </div>
             )
           })}

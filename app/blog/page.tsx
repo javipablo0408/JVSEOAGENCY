@@ -1,11 +1,11 @@
-import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Calendar, Clock, ArrowRight } from 'lucide-react'
+import { Calendar, ArrowRight } from 'lucide-react'
 import type { Metadata } from 'next'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import Contact from '@/components/Contact'
+import { getAllPosts, getFeaturedPosts, getRegularPosts } from '@/lib/blog-posts'
 
 export const metadata: Metadata = {
   title: 'Blog - Desarrollo Web Madrid | JVSEOAGENCY',
@@ -19,50 +19,11 @@ export const metadata: Metadata = {
   ],
 }
 
-interface BlogPost {
-  id: string
-  title: string
-  slug: string
-  excerpt: string
-  featured_image_url: string | null
-  author_name: string
-  published_at: string | null
-  created_at: string
-  views: number
-  featured: boolean
-}
+export default function BlogPage() {
+  const featuredPosts = getFeaturedPosts()
+  const regularPosts = getRegularPosts()
 
-async function getBlogPosts() {
-  try {
-    const { data, error } = await supabase
-      .from('blog_posts')
-      .select('id, title, slug, excerpt, featured_image_url, author_name, published_at, created_at, views, featured')
-      .eq('published', true)
-      .order('published_at', { ascending: false, nullsFirst: false })
-      .order('created_at', { ascending: false })
-      .limit(100)
-
-    if (error) {
-      // Si la tabla no existe aún, retornar array vacío
-      if (error.code === 'PGRST205' || error.message?.includes('Could not find the table')) {
-        return []
-      }
-      return []
-    }
-
-    return (data || []) as BlogPost[]
-  } catch (error) {
-    return []
-  }
-}
-
-export default async function BlogPage() {
-  const posts = await getBlogPosts()
-  const featuredPosts = posts.filter(p => p.featured)
-  const regularPosts = posts.filter(p => !p.featured)
-
-  const formatDate = (dateString: string | null) => {
-    if (!dateString) return ''
+  const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('es-ES', {
       year: 'numeric',
       month: 'long',
@@ -94,7 +55,7 @@ export default async function BlogPage() {
             <div className="grid md:grid-cols-2 gap-8">
               {featuredPosts.map((post) => (
                 <Link
-                  key={post.id}
+                  key={post.slug}
                   href={`/blog/${post.slug}`}
                   className="group bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2"
                 >
@@ -117,11 +78,7 @@ export default async function BlogPage() {
                     <div className="flex items-center gap-4 text-sm text-gray-500 mb-4">
                       <div className="flex items-center gap-1">
                         <Calendar size={16} />
-                        {formatDate(post.published_at || post.created_at)}
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <Clock size={16} />
-                        {post.views} vistas
+                        {formatDate(post.published_at)}
                       </div>
                     </div>
                     <div className="flex items-center text-primary-600 font-medium group-hover:gap-2 transition-all">
@@ -148,7 +105,7 @@ export default async function BlogPage() {
             <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {regularPosts.map((post) => (
                 <Link
-                  key={post.id}
+                  key={post.slug}
                   href={`/blog/${post.slug}`}
                   className="group bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2"
                 >
@@ -171,7 +128,7 @@ export default async function BlogPage() {
                     <div className="flex items-center gap-4 text-xs text-gray-500 mb-4">
                       <div className="flex items-center gap-1">
                         <Calendar size={14} />
-                        {formatDate(post.published_at || post.created_at)}
+                        {formatDate(post.published_at)}
                       </div>
                     </div>
                     <div className="flex items-center text-primary-600 font-medium text-sm group-hover:gap-2 transition-all">

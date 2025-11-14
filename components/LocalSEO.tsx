@@ -16,7 +16,7 @@ export default function LocalSEO() {
               <strong>Madrid, España</strong>
             </p>
             <p className="text-sm text-gray-500">
-              Servicios de desarrollo web para empresas en Madrid y toda España
+              Diseño de páginas web en Madrid. Servicios de diseño y desarrollo web para empresas en Madrid y toda España
             </p>
           </div>
           
@@ -53,8 +53,8 @@ export default function LocalSEO() {
         
         <div className="mt-8 pt-8 border-t border-gray-200">
           <p className="text-center text-sm text-gray-600">
-            <strong>Áreas de servicio:</strong> Madrid, Barcelona, Valencia, Sevilla, Bilbao y toda España. 
-            Desarrollo web profesional para empresas españolas.
+            <strong>Áreas de servicio:</strong> Diseño de páginas web en Madrid (Centro, Chamberí, Salamanca, Retiro y toda la Comunidad de Madrid), 
+            Barcelona, Valencia, Sevilla, Bilbao y toda España. Diseñador de páginas web en Madrid especializado en desarrollo web profesional para empresas españolas.
           </p>
         </div>
       </div>

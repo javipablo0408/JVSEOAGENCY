@@ -13,14 +13,13 @@ export default function Hero() {
               <span className="text-sm font-medium">Agencia Digital en Madrid</span>
             </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-              Desarrollo Web en Madrid, Apps y{' '}
-              <span className="text-primary-600">Automatizaciones IA</span>
+              Diseño de Páginas Web en Madrid,{' '}
+              <span className="text-primary-600">Desarrollo Web y Apps</span>
             </h1>
             <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-8 leading-relaxed">
-              Agencia de desarrollo web y aplicaciones móviles en Madrid. 
-              Transformamos tus ideas en soluciones digitales innovadoras para empresas en España. 
-              Especialistas en desarrollo web profesional, aplicaciones móviles y automatizaciones 
-              inteligentes con Inteligencia Artificial.
+              Diseñador profesional de páginas web en Madrid. Creamos sitios web modernos, rápidos y optimizados para SEO. 
+              Especialistas en diseño de páginas web en Madrid, desarrollo web profesional, aplicaciones móviles y automatizaciones 
+              inteligentes con Inteligencia Artificial. Tu diseñador de páginas web en Madrid de confianza.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <a

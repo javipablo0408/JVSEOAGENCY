@@ -1,95 +1,22 @@
-import { supabase } from '@/lib/supabase'
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Calendar, Clock, ArrowLeft, Share2 } from 'lucide-react'
+import { Calendar, ArrowLeft, Share2 } from 'lucide-react'
 import type { Metadata } from 'next'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import Contact from '@/components/Contact'
-
-interface BlogPost {
-  id: string
-  title: string
-  slug: string
-  excerpt: string
-  content: string
-  featured_image_url: string | null
-  author_name: string
-  author_email: string
-  meta_title: string | null
-  meta_description: string | null
-  keywords: string[]
-  published_at: string | null
-  created_at: string
-  views: number
-}
-
-async function getBlogPost(slug: string) {
-  try {
-    const { data, error } = await supabase
-      .from('blog_posts')
-      .select('*')
-      .eq('slug', slug)
-      .eq('published', true)
-      .single()
-
-    if (error || !data) {
-      // Si la tabla no existe aún, retornar null
-      if (error?.code === 'PGRST205' || error?.message?.includes('Could not find the table')) {
-        return null
-      }
-      return null
-    }
-
-    // Incrementar views (opcional, se puede hacer con un endpoint API)
-    try {
-      await supabase
-        .from('blog_posts')
-        .update({ views: (data.views || 0) + 1 })
-        .eq('id', data.id)
-    } catch (updateError) {
-      // Ignorar errores al actualizar views
-      console.log('Could not update views:', updateError)
-    }
-
-    return data as BlogPost
-  } catch (error) {
-    console.error('Error fetching blog post:', error)
-    return null
-  }
-}
-
-async function getAllSlugs() {
-  try {
-    const { data, error } = await supabase
-      .from('blog_posts')
-      .select('slug')
-      .eq('published', true)
-
-    if (error) {
-      // Si la tabla no existe aún, retornar array vacío
-      if (error.code === 'PGRST205' || error.message?.includes('Could not find the table')) {
-        return []
-      }
-      return []
-    }
-
-    return (data || []).map(post => post.slug)
-  } catch (error) {
-    return []
-  }
-}
+import { getPostBySlug, getAllPosts } from '@/lib/blog-posts'
 
 export async function generateStaticParams() {
-  const slugs = await getAllSlugs()
-  return slugs.map((slug) => ({
-    slug: slug,
+  const posts = getAllPosts()
+  return posts.map((post) => ({
+    slug: post.slug,
   }))
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const post = await getBlogPost(params.slug)
+export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
+  const post = getPostBySlug(params.slug)
 
   if (!post) {
     return {
@@ -106,7 +33,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       description: post.meta_description || post.excerpt,
       images: post.featured_image_url ? [{ url: post.featured_image_url }] : undefined,
       type: 'article',
-      publishedTime: post.published_at || undefined,
+      publishedTime: post.published_at,
       authors: [post.author_name],
     },
     twitter: {
@@ -118,15 +45,14 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   }
 }
 
-export default async function BlogPostPage({ params }: { params: { slug: string } }) {
-  const post = await getBlogPost(params.slug)
+export default function BlogPostPage({ params }: { params: { slug: string } }) {
+  const post = getPostBySlug(params.slug)
 
   if (!post) {
     notFound()
   }
 
-  const formatDate = (dateString: string | null) => {
-    if (!dateString) return ''
+  const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('es-ES', {
       year: 'numeric',
       month: 'long',
@@ -162,11 +88,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
           <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 mb-6">
             <div className="flex items-center gap-2">
               <Calendar size={16} />
-              {formatDate(post.published_at || post.created_at)}
-            </div>
-            <div className="flex items-center gap-2">
-              <Clock size={16} />
-              {post.views} vistas
+              {formatDate(post.published_at)}
             </div>
             <div className="flex items-center gap-2">
               Por {post.author_name}
@@ -222,7 +144,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
               <p className="text-sm text-gray-600">
-                Publicado el {formatDate(post.published_at || post.created_at)}
+                Publicado el {formatDate(post.published_at)}
               </p>
               {post.keywords.length > 0 && (
                 <div className="flex flex-wrap gap-2 mt-4">
