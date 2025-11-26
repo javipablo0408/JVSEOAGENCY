@@ -7,7 +7,14 @@ import Link from 'next/link'
 export default function Services() {
   const t = useTranslations('services')
   
-  const services = [
+  const services: Array<{
+    icon: typeof Globe
+    title: string
+    description: string
+    color: string
+    bgColor: string
+    link?: string
+  }> = [
     {
       icon: Globe,
       title: t('web.title'),
