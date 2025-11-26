@@ -36,9 +36,19 @@ export const blogPosts: BlogPost[] = [
 
 // Función helper para obtener todos los posts
 export function getAllPosts(): BlogPost[] {
-  return blogPosts.sort((a, b) => 
-    new Date(b.published_at).getTime() - new Date(a.published_at).getTime()
-  )
+  if (!blogPosts || blogPosts.length === 0) {
+    return []
+  }
+  try {
+    return blogPosts.sort((a, b) => {
+      const dateA = new Date(a.published_at).getTime()
+      const dateB = new Date(b.published_at).getTime()
+      return dateB - dateA
+    })
+  } catch (error) {
+    console.error('Error sorting blog posts:', error)
+    return blogPosts
+  }
 }
 
 // Función helper para obtener un post por slug
@@ -48,11 +58,27 @@ export function getPostBySlug(slug: string): BlogPost | undefined {
 
 // Función helper para obtener posts destacados
 export function getFeaturedPosts(): BlogPost[] {
-  return blogPosts.filter(post => post.featured)
+  if (!blogPosts || blogPosts.length === 0) {
+    return []
+  }
+  try {
+    return blogPosts.filter(post => post.featured === true)
+  } catch (error) {
+    console.error('Error filtering featured posts:', error)
+    return []
+  }
 }
 
 // Función helper para obtener posts regulares (no destacados)
 export function getRegularPosts(): BlogPost[] {
-  return blogPosts.filter(post => !post.featured)
+  if (!blogPosts || blogPosts.length === 0) {
+    return []
+  }
+  try {
+    return blogPosts.filter(post => !post.featured)
+  } catch (error) {
+    console.error('Error filtering regular posts:', error)
+    return []
+  }
 }
 

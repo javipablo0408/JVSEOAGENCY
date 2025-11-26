@@ -5,6 +5,8 @@ import { Metadata } from 'next'
 import { Globe, CheckCircle, Star, Zap, Smartphone, Palette } from 'lucide-react'
 import Image from 'next/image'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: 'Diseño de Páginas Web en Madrid | Diseñador Profesional | JVSEOAGENCY',
   description: 'Diseño profesional de páginas web en Madrid. Creamos sitios web modernos, rápidos y optimizados para SEO. Diseñador de páginas web en Madrid con experiencia. Desarrollo y creación de páginas web en Madrid.',

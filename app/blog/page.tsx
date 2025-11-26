@@ -7,6 +7,8 @@ import Footer from '@/components/Footer'
 import Contact from '@/components/Contact'
 import { getAllPosts, getFeaturedPosts, getRegularPosts } from '@/lib/blog-posts'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: 'Blog - Desarrollo Web Madrid | JVSEOAGENCY',
   description: 'Artículos sobre desarrollo web, aplicaciones móviles, automatizaciones con IA y tecnología en Madrid. Consejos, tutoriales y noticias del sector.',
