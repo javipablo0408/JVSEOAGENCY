@@ -212,6 +212,120 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
   const shareUrl = `https://jvseoagency.com/blog/${post.slug}`
 
+  // Función para formatear el contenido (convertir texto plano a HTML si es necesario)
+  const formatContent = (content: string): string => {
+    if (!content) return ''
+    
+    // Si el contenido ya tiene etiquetas HTML, devolverlo tal cual
+    if (content.includes('<') && content.includes('>')) {
+      return content
+    }
+    
+    // Si es texto plano, convertirlo a HTML con formato
+    const lines = content.split('\n')
+    const result: string[] = []
+    let currentParagraph: string[] = []
+    let inList = false
+    let listType: 'ul' | 'ol' | null = null
+    let listItems: string[] = []
+    
+    const flushParagraph = () => {
+      if (currentParagraph.length > 0) {
+        const text = currentParagraph.join(' ').trim()
+        if (text) {
+          // Convertir markdown básico a HTML
+          let formatted = text
+            .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+            .replace(/__(.+?)__/g, '<strong>$1</strong>')
+            .replace(/\*(.+?)\*/g, '<em>$1</em>')
+            .replace(/_(.+?)_/g, '<em>$1</em>')
+          result.push(`<p>${formatted}</p>`)
+        }
+        currentParagraph = []
+      }
+    }
+    
+    const flushList = () => {
+      if (listItems.length > 0 && listType) {
+        const listTag = listType === 'ol' ? 'ol' : 'ul'
+        const items = listItems.map(item => {
+          let formatted = item.trim()
+            .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+            .replace(/__(.+?)__/g, '<strong>$1</strong>')
+            .replace(/\*(.+?)\*/g, '<em>$1</em>')
+          return `  <li>${formatted}</li>`
+        }).join('\n')
+        result.push(`<${listTag}>\n${items}\n</${listTag}>`)
+        listItems = []
+        listType = null
+        inList = false
+      }
+    }
+    
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i].trim()
+      
+      if (!line) {
+        flushParagraph()
+        flushList()
+        continue
+      }
+      
+      // Detectar títulos (líneas cortas sin punto final, seguidas de contenido)
+      if (line.length < 80 && !line.endsWith('.') && !line.endsWith(',') && 
+          (i === 0 || !lines[i-1]?.trim() || lines[i-1]?.trim().endsWith('.'))) {
+        flushParagraph()
+        flushList()
+        // Verificar si es realmente un título (no es una lista)
+        if (!/^[-*•]\s/.test(line) && !/^\d+\.\s/.test(line)) {
+          result.push(`<h2>${line}</h2>`)
+          continue
+        }
+      }
+      
+      // Detectar listas numeradas
+      const numberedMatch = line.match(/^(\d+)\.\s(.+)$/)
+      if (numberedMatch) {
+        flushParagraph()
+        if (!inList || listType !== 'ol') {
+          flushList()
+          listType = 'ol'
+          inList = true
+        }
+        listItems.push(numberedMatch[2])
+        continue
+      }
+      
+      // Detectar listas con viñetas
+      const bulletMatch = line.match(/^[-*•]\s(.+)$/)
+      if (bulletMatch) {
+        flushParagraph()
+        if (!inList || listType !== 'ul') {
+          flushList()
+          listType = 'ul'
+          inList = true
+        }
+        listItems.push(bulletMatch[1])
+        continue
+      }
+      
+      // Si estamos en una lista y encontramos texto normal, cerrar la lista
+      if (inList) {
+        flushList()
+      }
+      
+      // Agregar línea al párrafo actual
+      currentParagraph.push(line)
+    }
+    
+    flushParagraph()
+    flushList()
+    
+    return result.join('\n\n')
+  }
+
+  const formattedContent = formatContent(translatedContent)
+
   return (
     <>
       <Header />
@@ -289,8 +403,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
         {/* Article Content */}
         <div 
-          className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-a:text-primary-600 prose-a:no-underline hover:prose-a:underline prose-strong:text-gray-900 prose-code:text-primary-600 prose-pre:bg-gray-900 prose-pre:text-gray-100"
-          dangerouslySetInnerHTML={{ __html: translatedContent }}
+          className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-a:text-primary-600 prose-a:no-underline hover:prose-a:underline prose-strong:text-gray-900 prose-code:text-primary-600 prose-pre:bg-gray-900 prose-pre:text-gray-100 prose-ol:list-decimal prose-ul:list-disc prose-li:my-2"
+          dangerouslySetInnerHTML={{ __html: formattedContent }}
         />
 
         {/* Article Footer */}

@@ -94,7 +94,11 @@ const process = [
   },
 ]
 
-export default function DisenoPaginasWebMadridPage() {
+export default function DisenoPaginasWebMadridPage({
+  params
+}: {
+  params: Promise<{ locale: string }>
+}) {
   return (
     <>
       <Header />
